@@ -1,0 +1,477 @@
+\documentclass{sfuthesis}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{mathrsfs}
+\usepackage{mhchem}
+\usepackage[backend=biber]{biblatex}
+
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+
+\newcommand{\sgn}{\mathrm{sgn}}
+
+\title{Anomalous cooling in noninstantaneously quenched colloids}
+\author{Siddharth Sanjay Sane}
+\previousdegrees{%
+    B.Sc. (Hons.), Azim Premji University, 2020}
+\degree{Master of Science}
+\department{Department of Physics}
+\faculty{Faculty of Science}
+\copyrightyear{2026}
+\semester{Summer 2026}
+
+\committee{
+    \chair{Pamela Isely}{Assistant Professor, Computing Science}
+    \member{John Bechhoefer}{Supervisor \\ Professor, Physics}
+    \member{Steve Dodge}{Committee Member \\ Professor, Physics}
+}
+\addbibresource{thesis_references.bib}
+
+\begin{document}
+
+\frontmatter
+\maketitle{}
+\makecommittee{}
+
+%\addtoToC{Ethics Statement}%
+%\includepdf[pagecommand={\thispagestyle{plain}}]{ethics_statement_piii.pdf}%
+%\clearpage
+
+\begin{abstract}
+Abstract paragraphs should be unindented. Master's abstracts are limited to 150 words; the limit is 350 words for doctoral abstracts. Abstract text must fit on a single page.
+\end{abstract}
+
+
+\begin{dedication}
+This is an optional page. Use your choice of paragraph style for text on this page.
+\end{dedication}
+
+
+\begin{acknowledgements}
+This is an optional page. Use your choice of paragraph style for text on this page.
+\end{acknowledgements}
+
+\addtoToC{Table of Contents}%
+\tableofcontents%
+\clearpage
+
+%   This is an optional page. Remove the following lines if you don't have any tables.
+\addtoToC{List of Tables}%
+\listoftables%
+\clearpage
+
+%   This is an optional page. Remove the following lines if you don't have any figures.
+\addtoToC{List of Figures}%
+\listoffigures%
+\clearpage
+
+
+\mainmatter%
+
+\chapter{Introduction}
+The Mpemba effect, first described by the Erasto Mpemba in 1969 with Denis Osborne~\cite{Mpemba1969}, is the counterintuitive phenomenon where a hot system cools faster than a warm system. This was first discovered by Mpemba while trying to make icecream with milk that hadn't yet cooled. This phenomenon was potentially known as far back as Aristotle~\cite{Burridge2016}. 
+
+An equilibrium explanation of the Mpemba effect defies common sense: a hot object would have to cool to the warm temperature before it could cool to room temperature, so one would expect that it takes strictly longer. Newton's law of cooling clearly fails to explain the effect. Indeed, the existence of the Mpemba effect in water was contested for several decades following the publication, and Burridge and Linden argued in 2016~\cite{Burridge2016} that the Mpemba effect did not truly exist. 
+
+Although this remains contentious, with some work continuing to show the existence of the Mpemba effect in water, it is uncontroversial that `Mpemba-like' effects do in fact exist in other systems. We list some of the effects here.
+\begin{enumerate}
+    \item \textit{Clathrate hydrates}: Ahn et al~\cite{Ahn2016} found that tetrahydrofuran (THF) hydrate, the simplest kind of a class of polymers called clathrate hydrates, displays the Mpemba effect. Clathrate hydrates are crystalline solids that can `enclathrate' certain guest molecules inside cages of hydrogen bonds, and Ahn et al showed that the rate of THF hydrate formation goes down with initial temperature over a certain range of initial temperatures.
+    \item \textit{Magnetoresistant magnetites}: Chaddah et al~\cite{Chaddah2010} found that in a certain well-known half-doped magnetite LCMO (\ce{La0.5Ca0.5MnO3}), a system that cools in a magnetic field, reaches equilibrium ($M=0$) faster if the initial magnetisation is higher. 
+    \item \textit{Polylactide crystallisation}: Hu et al~\cite{Hu2018} studied the crystallisation of polylactide, a polymer with long chains that must be in a certain conformation in order for the polymer to crystallise. This polymer could crystallise faster if it started at a higher temperature; the authors reason that this was because the polymer chains are more mobile at higher temperatures and can therefore rearrange themselves into advantageous structures faster.
+    \item \textit{Granular fluid simulations}: Lasanta et al~\cite{Lasanta2017} studied numerical simulations of granular fluids made of inelastically colliding rigid spheres. Unlike other systems outlined here, theirs is a system without a phase transitions. They found that if the probability density describing the velocity distribution of their system has a high enough excess kurtosis, systems starting at higher temperatures could cool faster. This paper is particularly relevant to our discussion for a number of reasons: their system is described by an equation related to the Fokker-Planck equation, their system has no phase transition, and most interestingly, they predict an \textit{inverse Mpemba effect}, where cooler systems can warm faster. 
+\end{enumerate}
+The authors of all of the papers cited here propose a variety of different mechanisms to explain the Mpemba effect in their systems, but the ubiquity of this effect in so many systems makes a general explanation for the Mpemba effect desirable. To this end, Lu and Raz~\cite{Lu2017} proposed a mechanism for what they called a \textit{Markovian} Mpemba effect, using nonequilibrium statistical mechanics to show that if a system was Markov, there was a straightforward condition that would predict the existence of a Mpemba effect. The fact that the system is out of equilibrium for the duration of its cooling is critical to their explanation of why the system would not need to pass through an intermediate temperature: temperature characterises equilibrium (\textit{i.e.} Boltzmann) distributions, and between the initial and final times the system has no well-defined temperature. This was something that Mpemba and Osborne discussed in their original paper~\cite{Mpemba1969} as well: they observed that their cooling system had a gradient of temperatures. However, since a temperature was no longer well-defined, Lu and Raz had to come up with a new way to quantify how `close' a system was to equilibrium. They did this using a \textit{distance function}, a function that takes in two distributions and returns a positive number that gets closer to zero as one distribution converges to the other. Additionally, the distance function would have a number of properties that ensure that one could not artificially choose a distance function that would reach zero faster if the temperature was higher. Lu and Raz showed that given the conditions they required, the Mpemba effect was agnostic to the choice of distance function: if the system showed the Mpemba effect with one distance function, it would have to show the Mpemba effect with any other choice of distance function. 
+
+The first experimental confirmation of Lu and Raz's theory came with Kumar and Bechhoefer's~\cite{Kumar2020} work in 2020, where they used a \textit{feedback optical trap}, an optical trap that could impose almost arbitrary forces on a trapped particle by measuring the position of the particle and moving the trap centre in very short times, to study mesoscopic silica beads relaxing under a specially chosen potential. Their experiment consisted of choosing an initial position $x_0$ from a Boltzmann distribution $x_0\sim\pi(x;T_h)$ at high temperature $T_0$, moving the bead to this position, and then allowing it to diffuse under an asymmetric double-welled potential $U(x)$, imposed by a feedback optical trap (first discussed in~\cite{Kumar2018}). This was repeated a large number of times to construct an ensemble, which could be viewed in aggregate as a colloid of noninteracting one-dimensional particles. This system in particular allowed for the observation of a \textit{strong} Mpemba effect, previously predicted in~\cite{Klich2019}, where the time to cool was exponentially lower for a system that started at a higher temperature. However, because of certain physical constraints that their system had, their potential had a somewhat artificial `box' that limited how large the initial position was allowed to be, and the Mpemba effect depended on the size of their box as well as the initial temperature. This becomes especially problematic when one tries to extend their results beyond the infinite quenches previously considered, as a high noise temperature enables the particles to escape the region of observation in an experiment. Consequently, the work in this thesis is twofold: we outline new potentials, exploring classes of potential that display strong Mpemba effects with no need for a box; and we implement these results in previous experiments, adding finite quenches using random forces.
+
+The second chapter of this thesis will discuss the background theory as well as new theoretical constraints on the experiments, the third chapter will discuss the experimental setup and procedure, and the fourth chapter will discuss results from simulations and experiments.
+
+\chapter{Theory}
+
+In this chapter, we describe the theoretical framework we use in this thesis, starting with a description of the system, the framework Lu and Raz~\cite{Lu2017} used in 2017, the framework Kumar and Bechhoefer~\cite{Kumar2020} used in 2020, and the theoretical problems we will solve. 
+
+\section{The Master equation}
+The Master equation describes the most general framework for the dynamics of Markov probability distributions. Given a discrete probability distribution $p_n$, the evolution of $p$ is given by
+\begin{equation}
+    \pdv{p}{t} = \mathbb W p,
+\end{equation}
+where the linear operator $\mathbb W$ is given by
+\[\mathbb W_{nm} = \begin{cases}
+    W_{nm},& m\neq n\\
+    -\sum_{n\neq m} W_{nm},& m = n
+\end{cases} = W_{nm}-\delta_{nm}\sum_{n\neq m} W_{nm},\]
+where $W_{nm}$ represents the transition rate from state $m$ to state $n$ and $\delta_{nm}$ is the Kr\"onecker delta. The off-diagonal entries $\mathbb W_{nm}$ represent influxes and the diagonal entries represent effluxes. As a consequence of the conservation of probability, the net flux must add to zero; hence the fact that all columns in the master equation add to zero. This system does not necessarily have a stationary distribution, but if one exists (such that for distribution $\pi$, $\mathbb W_{ij}\pi_j = \mathbb W_{ji}\pi_i$ for all $i,j$ --- meaning the influxes and effluxes of \textit{each state} are matched rather than just the net influx and efflux), we say that the system has detailed balance. This formulation of the master equation applies only to discrete systems, but can easily be made continuous by changing all indices to continuous variables and all sums to integrals, yielding the following form of the operator $\mathbb W$:
+\begin{equation}
+    \pdv{p}{t} = \mathbb W p = \int_{\mathbb R} [W(x|x')p(x)-W(x'|x)p(x)]\dd{x'}
+\end{equation}
+\section{The Fokker-Planck equation}
+The Master equation can be recast with a transformation of variables. Letting $r = x-x'$ and defining $W(x-r; r) := W(x|x')$, we have $W(x'|x) = W(x;-r)$ and $p(x-r, t) = p(x', t)$. Thus,
+\[\pdv{t} p(x,t) = \int_{\mathbb R} [W(x;-r)p(x,t)-W(x-r;r)p(x-r)]\dd{r}.\]
+We now assume that $W(x;r)$ is sharply peaked in $r$ (so that only small jumps are likely in small times, which is to say that $r$ is most likely small) and that $W(x;r)p(x,t)$ is analytic in $x$. This allows us to Taylor-expand $W(x-r;r)p(x-r,t)$ in $r$:
+\[W(x-r;r)p(x-r,t) = W(x;r)p(x,t) - r\pdv{r} [W(x;r)p(x,t)]+\frac 12 r^2\pdv[2]{r}[W(x;r)p(x,t)]+ \order{r^3}.\]
+We have
+\[\left[ \int_{\mathbb R} W(x;r)\dd{r}-\int_{\mathbb R}W(x-r;-r)\dd{r} \right]p(x,t) = 0 = \pdv{p}{t}\]
+by King's rule. Thus, 
+\[\pdv{p}{t} = \int_{\mathbb R}\left[ \sum_{\nu=1}^\infty \frac{(-r)^\nu}{\nu!}\pdv[\nu]{x}[W(x;r)p(x,t)] \right]\dd{r}.\]
+We exchange the integral and summation, and define the moment rate 
+\[c_\nu(x) = \int_{\mathbb R} r^\nu W(x;r)\dd{r}.\]
+Then we can recast the Master equation as
+\[\pdv{p}{t} = \sum_{\nu=1}^\infty \frac{(-1)^\nu}{\nu!}\pdv[\nu]{x}[c_\nu(x)p(x,t)].\]
+This is called the \textit{Kramers-Moyal expansion}. If we only keep two terms, we are left with the Fokker-Planck equation,
+\begin{equation}
+    \pdv{p}{t} = -\pdv{x}[c_1(x)p(x,t)] + \frac 12\pdv[2]{x}[c_2(x)p(x,t)].
+\end{equation}
+Note that there is not necessarily a good reason to truncate the series like this; there is no small parameter that allows us to ignore higher-order terms. van Kampen~\cite{vanKampen2011} provides a more rigorous derivation of the Fokker-Planck equation from the Master equation. However, the Pawula theorem~\cite{Pawula1967} shows us that if the probability is to be normalisable, we must either have one, two, or infinitely many nonzero $c_\nu$ in the Kramers-Moyal expansion; we cannot truncate the series at three terms, for example. The important feature, however, is that the Fokker-Planck equation is a type of Master equation, and so when we limit our analysis to the FPE, Lu and Raz's general results on the Master equation still apply.
+
+If we define $c_1(x)=\frac{F(x)}{\gamma}$ with  $F$ the force and $\gamma$ the viscosity (characteristic of a linear drag $F_d = -\gamma \dot x$~\footnote{Note that $\gamma$ has dimensions $\mathrm{mass/time}$}) and $c_2(x)= 2D$, we are left with an expression for the probability distribution of a Brownian particle in a medium of viscosity $\gamma$, experiencing force $F$ and diffusing with diffusivity $D$. This form will be more useful when describing actual diffusing silica microspheres. If $D$ is not dependent on $x$, we have
+\begin{equation}
+    \pdv{p}{t} = -\frac 1{\gamma}\pdv{x}[F(x)p(x,t)]+D\pdv[2]{p}{x}.\label{eq:FPE}
+\end{equation}
+We also often use the fluctuation-dissipation relationship,
+\begin{equation}
+    D = \frac{k_BT}{\gamma},
+\end{equation}
+where $k_B$ is the Boltzmann constant and $T$ is the temperature. 
+
+\section{Eigenfunction expansion of the $\mathbb{W}$-operator}
+We note that the Master equation suggests the separation \textit{ansatz} 
+\begin{equation}
+    p(x,t) = v(x)e^{-\lambda t}.\label{eq:separationAnsatz}
+\end{equation} 
+Plugging this into the Master equation, we have
+
+\begin{align}
+    -\lambda e^{-\lambda t}v(x) &= e^{-\lambda t}\mathbb W v(x)\\
+    \mathbb W v(x) &= -\lambda v(x).
+\end{align}
+This is an eigenvalue equation, and allows us to expand the solution $p(x,t)$ in an eigenbasis:
+\begin{equation}
+    p(x,t) = \sum_{n=0}^\infty a_n v_n(x)e^{-\lambda_n t}.
+\end{equation}
+Note that these eigenvalues need not be discrete --- in which case we must replace the sum with an integral. 
+Since all probabilities normalise to $\int_{\mathbb R} p(x,t)\dd{x} = 1$, the eigenfunctions $v_n(x)$ are members of a Hilbert space with $\ev{u_m,v_n} \propto \delta_{mn}$. Since $p(x,t)$ is defined on $x\in\mathbb R$, the inner product is defined as
+\begin{equation}
+    \ev{u_m,v_n} = \int_{\mathbb R} u_m(x)v_n(x)\dd{x}.
+\end{equation} 
+Here, $u_m(x)$ denotes the \textit{left eigenfunction} of $\mathbb W$, which is equal to the right eigenfunction of the conjugate operator $\mathbb W^\dagger$, satisfying $\mathbb W^\dagger u_m = -\lambda_m u_m$. Since $\mathbb W\neq \mathbb W^\dagger$ in general, $u_m(x) \neq v_m(x)$, although we may make a transformation to $v_m$ to transform the Fokker-Planck equation into a Schr\"odinger equation~\footnote{See Risken~\cite{Risken1996} for details}. We can use this fact to isolate the coefficients $a_n$ by taking the inner product of $p(x,t)$ with $u_n(x)$:
+\begin{align*}
+    \ev{u_n,p(x,t)} &= \sum_{k=0}^\infty a_k \ev{u_n,v_k}e^{-\lambda_k t}\\
+    &= a_n\bra{u_n,v_n}e^{-\lambda_n t}\\
+    \therefore \ev{u_n,p(x,0)} &= a_n\ev{u_n,v_n}\\
+    a_n &= \frac{\ev{u_n,p(x,0)}}{\ev{u_n,v_n}}
+\end{align*}
+This suggests that the boundary condition $p(x,0)$ determines the coefficients in the series. 
+
+We also note that if we set the left hand side of the Master equation to zero, we are left with the steady-state equation
+\begin{equation}
+    \mathbb W \pi(x) = 0 = 0\cdot \pi(x).
+\end{equation}
+This is, in other words, an eigenvalue equation with eigenvalue zero. Because of the $e^{-\lambda_n t}$ terms in the infinite series, the eigenfunction expansion of the Master equation is always absolutely convergent (provided that $\lambda_n \geq 0$, which would be required for the probability to remain normalisable). This means that we may freely rearrange terms in the sum so that $\lambda_1 < \lambda_2 < \dots$, and $\lambda_1=0$, the smallest possible value. In the particular case of the Fokker-Planck equation with uniform diffusivity in space, we are left with the equation 
+\begin{align}
+    \frac 1{\gamma}\pdv{x}[F(x)\pi(x)] &= \frac{k_BT}{\gamma}\pdv[2]{\pi}{x}\\
+    F(x)\pi(x) &= k_BT\pdv{\pi}{x}\\
+    \pi(x) &= \frac 1{Z(T)} \exp[-\frac{U(x)}{k_BT}]\label{eq:boltzmannDistro},
+\end{align}
+where we define the normalisation constant
+\begin{equation}
+    Z(T) = \int_{\mathbb R} \exp[-\frac{U(x)}{k_BT}]\dd{x}
+\end{equation}
+and the potential $U(x)$ is defined so that 
+\begin{equation}
+    F(x) = -\dv{U}{x}.
+\end{equation}
+Eq.~\ref{eq:boltzmannDistro} is called the \textit{Boltzmann distribution}. In general, for any Markov system with detailed balance where each state $x$ has energy $E(x)$, the Boltzmann distribution is given by
+\begin{equation}
+    \pi(x;T_i) = \frac 1{Z(T_i)} e^{-\frac{E(x)}{k_BT_i}}.
+\end{equation}
+For brevity, we will often denote $\pi_i(x) = \pi(x;T_i)$
+
+\section{Cooling in Markov systems}
+\begin{figure}
+    \centering
+    \label{fig:coolingTheory}
+    \includegraphics[width=\textwidth]{{./Figures/chapter2/fpe_evolution/pdf_evolution_concise.pdf}}
+
+    \caption{\textit{The probability density $p(x,t)$ at different times during the `cooling' protocol: the first and third plots are both Boltzmann distributions at temperatures $T_h \approx 22T_c$ and $T_c$ respectively, for a double-welled potential with units chosen so that $k_BT_c=1$.}}
+\end{figure}
+
+We may now explain the theory that Lu and Raz~\cite{Lu2017} first described in 2017. We say that a system has temperature $T$ if its probability distribution is given by the Boltzmann distribution
+\begin{equation}
+    \pi(x;T) = \frac 1{Z(T)} \exp[-\frac{U(x)}{k_BT}].
+\end{equation}
+We suppose the system has temperature $T_c$ at equilibrium ($t\rightarrow\infty$), and has temperature $T_h$ at $t=0$. The evolution of $p(x,t)$ under the master equation $\pdv{p}{t}=\mathbb W p$ with the boundary condition $p(x,0)=\pi(x;T_h)$ and steady state $p(x,t\rightarrow\infty) = \pi(x;T_c)$ then defines what it means for a nonequilibrium system to cool. This, then, gives us a way to resolve the problem we stated in the introduction: since $p(x,t)$ need not be Boltzmann for $0<t<\infty$, the system does not have a well-defined temperature between $t=0$ and $t\rightarrow\infty$. However, we now have another problem: the Mpemba effect (and most `Mpemba-like' effects) relied on a phase transition to make precise the statement that a hot system could cool `faster'. Since a Markov system only reaches the equilibrium temperature asymptotically and does not have a phase transition, it is not obvious how one may define what it means for a system to cool `more quickly' than another. Lu and Raz therefore made use of another tool, a \textit{distance function}.
+
+\section{Distance functions, and a definition of the Mpemba effect}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.48\textwidth]{{./Figures/chapter2/distances/distances_mpemba_fpe.pdf}}
+    \includegraphics[width=0.48\textwidth]{{./Figures/chapter2/distances/distances_noMpemba.pdf}}
+    \caption{\textit{The Mpemba effect illustrated through solutions of the Fokker-Planck equation. The distance curves cross at some time $t^*$ in the figure on the right, whereas they never cross in the figure on the left. We therefore say that the potential yielding the system on the right displays the Mpemba effect.}}
+    \label{fig:mpembaFPE}
+\end{figure}
+Metrics are often used in analysis to quantify how `far apart' two elements of a set are. For example, the $\mathcal L_2$ norm, $\mathscr D_{\mathcal L_2}:\mathbb C\times\mathbb C\rightarrow\mathbb R_{\geq 0}$ where 
+\[\mathscr D_{\mathcal L_2}(z_1,z_2)=\sqrt{(\Re z_1-\Re z_2)^2+(\Im z_1-\Im z_2)^2},\] 
+quantifies how far apart the complex numbers $z_1$ and $z_2$ are, and allows one to make precise statements about convergence in complex space.
+
+The approach Lu and Raz~\cite{Lu2017} used was similar: define a function that takes in two probability distributions and returns a positive number whose magnitude quantifies how different they are. The distance function only returns $0$ if the two distributions are identical. Additionally, to preserve intuitive ideas of distance to equilibrium, they defined a series of criteria that distance functions must obey. More specifically, a distance function $\mathscr D$ is a function that takes in two probability distributions $p_1,p_2$ and returns a number $\mathscr D[p_1, p_2] \geq 0$ such that: 
+\begin{enumerate}
+    \item \textit{Positivity:} $\mathscr D[p_1,p_2] \geq 0$, and $\mathscr D[p_1,p_2] = 0 \iff p_1=p_2$;
+    \item \textit{Monotonic rise in initial temperature:} \\$\mathscr D[\pi(x;T_h), \pi(x;T_c)] > \mathscr D[\pi(x;T_w), \pi(x;T_c)]$ if $T_h>T_w>T_c$ (\textit{i.e.} systems with higher initial temperatures are always `further' from equilibrium);
+    \item \textit{Monotonic decrease with relaxation:} Given a cooling system whose distribution is $p(x,t)$, $\mathscr D[p(x,t_1),\pi(x;T_c)] \geq D[p(x,t_2),\pi(x;T_c)]$ if $t_1<t_2$ (\textit{i.e.} systems always relax \textit{towards} equilibrium, never away);
+    \item \textit{Convexity and continuity} $\mathscr D[p, \pi(x;T_c)]$ is smooth and convex in $p$. 
+\end{enumerate}
+Note that Lu and Raz do not require $\mathscr D$ to be a metric; $\mathscr D$ need not be symmetric in $p_1$ and $p_2$ or obey the triangle inequality. However, $\mathscr D$ serves the same purpose: it puts a number on how far two distributions are from each other. The second condition captures the idea that a hot distribution is `further' from equilibrium than a warm distribution. The third condition captures the idea that, if the system is always cooling, the system must get closer to equilibrium with time. 
+
+Examples of the distance function $\mathscr D$ include:
+\begin{itemize}
+    \item The $\mathcal L_1$ distance, 
+    \begin{equation}
+        \mathscr D_{\mathcal L_1}[p_1,p_2] = \int_{\mathbb R} |p_1(x)-p_2(x)|\dd{x};
+    \end{equation}
+    \item The Kullback-Leibler divergence, 
+    \begin{equation}
+        \mathscr D_{\mathrm{KL}}[p_1,p_2] = \int_{\mathbb R} p_1(x)\ln\left[ \frac{p_1(x)}{p_2(x)} \right]\dd{x};
+    \end{equation}
+    \item The entropic distance from Lu and Raz~\cite{Lu2017}:
+    \begin{equation}
+        \mathscr D_{\mathrm{ent}}[p_1,p_2] = \frac{\ev{U}_{1}-\ev{U}_2}{k_BT} - \int_{\mathbb R} \left[ p_1\ln [p_1(x)]-p_2\ln [p_2(x)] \right]\dd{x}
+    \end{equation}
+\end{itemize}
+
+Since we are always going to take the distance with respect to the steady-state Boltzmann distribution (at temperature $T_c$), we may as well define a new function for brevity, 
+\begin{equation}
+    \mathcal D_c[p(x,t)] = \mathscr D[p(x,t),\pi(x;T_c)].
+\end{equation}
+$\mathcal D_c$ is a functional, an operator that takes in a function and returns a number.
+
+This theoretical machinery now allows for a precise definition of the Mpemba effect. Given two Markov systems $p_h$ and $p_w$ which cool to the same distribution $\pi_c$, and start in states $p_h(x,0) = \pi(x;T_h)$ and $p_w(x,0)=\pi(x;T_w)$, we say the system exhibits the Mpemba effect if there exists finite $t^*$ for which 
+\begin{equation}
+    \mathcal D_c[p_h(x,t)] \leq \mathcal D_c[p_w(x,t)],\label{eq:mpembaCondition}
+\end{equation}
+for all $t>t^*$, for some distance function $\mathcal D_c$. Since 
+\begin{equation}
+    \mathcal D_c[p_h(x,0)] > \mathcal D_c[p_w(x,0)]
+\end{equation}
+by construction, this implies that the distance curves will cross an odd number of times~\footnote{It is possible that the hot system is closer to equilibrium for a short time before the warm system overtakes it again. One must therefore require an odd number of crossings, rather than simply requiring at least one crossing.} at some time $t^*$, when $\mathcal D_c[p_h(x,t^*)]=\mathcal D_c[p_w(x,t^*)]$. This is plotted in Fig.~\ref{fig:mpembaFPE} 
+The logical question to ask is then if the choice of $\mathcal D_c$ affects whether the Mpemba effect occurs.
+
+\section{Conditions for the existence of the Mpemba effect}
+Consider two systems, $p_h(x,t)$ and $p_w(x,t)$, for which $p_h(x,0)=\pi(x;T_h)$, $p_w(x,0)=\pi(x;T_w)$, and identical steady states $p_h(x,\infty)=p_w(x,\infty)=\pi(x;T_c)$. Both systems have eigenfunction expansions given by
+\begin{equation}
+    p(x,t) = \pi_c(x) + \sum_{n=2}^\infty a_n v_n(x)e^{-\lambda_n t}.
+\end{equation}
+As before, we have rearranged our series so that $\lambda_2<\lambda_3<\dots$. Since this is the case, the $e^{-\lambda_3 t}$ term decays exponentially faster than the $e^{-\lambda_2 t}$ term, and so for some sufficiently large time we can truncate the series to two terms:
+\begin{equation}
+    p(x,t) \approx \pi_c(x) + a_2(T_i) v_2(x)e^{-\lambda_2 t}.
+\end{equation}
+for initial temperature $T_i$. Note that only $a_2$ depends on the initial temperature. The condition we require for the Mpemba effect is $\mathcal D_c[p_h(x,t^*)] \leq \mathcal D_c[p_w(x,t^*)]$. Using the approximation, we can now use the smoothness of $\mathcal D$ in $p$ to then make the following approximation, since the $a_2v_2(x)e^{-\lambda_2t}$ term will be small at a suitably large time:
+\begin{equation}
+    \mathcal D_c\left[ \pi_c+a_2v_2e^{-\lambda_2 t} \right] \approx \mathcal D_c\big[\pi_c\big] + a_2e^{-\lambda_2 t}\ev{\fdv{\mathcal D_c}{v_2}\big[\pi_c\big], v_2},
+\end{equation}
+where $\fdv{}{f}$ denotes the functional derivative with respect to the function $f(x)$. The functional derivative, analogous to a gradient, will always return a member of a dual space. Here, we make use the form of a Taylor expansion for functionals,
+\begin{equation}
+    \mathcal F\big[ f+\epsilon g \big] = \mathcal F\big[f\big] + \epsilon \ev{\fdv{\mathcal F}{g}\big[f\big],g} + \order{\epsilon^3}.
+\end{equation}
+
+We notice that in this equation, $\mathcal D_c\big[{\pi_c}\big]=0$ by the first property. This means
+\begin{align}
+    \mathcal D_c\big[\pi_c+a_2(T_i)v_2e^{-\lambda_2 t}\big] \approx a_2(T_i)e^{-\lambda_2 t}\ev{\fdv{\mathcal D_c}{v_2}\big[\pi_c\big],v_2},
+\end{align}
+for initial temperature $T_i$. Define $V = \ev{\fdv{\mathcal D_c}{v_2}\big[\pi_c\big],v_2}$ for brevity. Then we have 
+\begin{equation}
+    \mathcal D_c\left[ \pi_c+a_2(T_i)v_2e^{-\lambda_2 t}\right] \approx a_2(T_i)Ve^{-\lambda_2 t}.
+\end{equation}
+Equating this to our previous expression, we see
+\begin{equation}
+    \mathcal D_c\big[p_i(x,t)\big] \approx Ve^{-\lambda_2 t}a_2(T_i).
+\end{equation}
+The condition~\ref{eq:mpembaCondition} for the Mpemba effect then approximately reduces to
+\begin{equation}
+    Ve^{-\lambda_2 t^*}a_2(T_h) \leq Ve^{-\lambda_2 t^*}a_2(T_w),
+\end{equation}
+for some $t^*<\infty$. Cancelling like terms, we finally arrive at the condition
+\begin{equation}
+    \abs{a_2(T_h)} \leq \abs{a_2(T_w)}.
+\end{equation}
+(The absolute value is necessary in case $V<0$.)
+
+Put differently, the condition reduces to the statement that $\abs{a_2(T)}$ is nonmonotonic in $T$.  Since we have not made use of any particular form of $\mathcal D_c$ except for the properties we required, the Mpemba effect is independent of the choice of distance function~\footnote{This proof is not quite as rigorous as Lu and Raz's, and ignores the convexity that they required of the distance function. Convexity ensures that the approximation is always valid}. For example, if 
+\[\mathcal D_c[\pi_c+a_2v_2e^{-\lambda_2t}] = \int_{\mathbb R}\abs{\pi_c+a_2v_2e^{-\lambda_2t}-\pi_c}\dd{x} = \abs{a_2}e^{-\lambda_2t}\int_{\mathbb R}\abs{v_2(x)}\dd{x} \] 
+(\textit{i.e.} the $\mathcal L_1$ distance), 
+\[\fdv{\mathcal D_c}{v_2} = \sgn(v_2(x)).\]
+Thus, 
+\[\ev{\fdv{\mathcal D_c}{v_2}[\pi_c],v_2} = \int_{\mathbb R}\sgn(v_2(x))v_2(x)\dd{x} = \int_{\mathbb R}\abs{v_2(x)}\dd{x},\]
+and this thus reduces to the proof of the existence of the Mpemba effect given in Kumar and Bechhoefer~\cite{Kumar2020}.
+
+This proof relies on the fact that the second term in the eigenfunction expansion dominates the behaviour. However, this approximation can break down if there exists $T_h>T_w>T_c$ for which $a_2(T_h)=0$ and $a_2(T_w)\neq 0$. In this case, the third term dominates the series:
+\[p_h \approx \pi_c + a_3(T_h)v_3e^{-\lambda_3 t}.\]
+Repeating the analysis before, but using $a_3e^{-\lambda_3 t}v_3$ as the small term, we arrive at the approximation
+\begin{equation}
+    \mathcal D_c\big[p_h\big] \approx a_3(T_i)e^{-\lambda_3 t}\ev{\fdv{\mathcal D_c}{v_3}\big[\pi_c\big],v_3}\label{eq:strongMpembaph}.
+\end{equation}
+Comparing this with 
+\begin{equation}
+    \mathcal D_c\big[p_w\big] \approx a_2(T_w)e^{-\lambda_2 t}\ev{\fdv{\mathcal D_c}{v_2}\big[\pi_c\big], v_2}\label{eq:strongMpembapw},
+\end{equation}
+we see that $\mathcal D_c\big[p_w\big] \gg \mathcal D_c\big[p_h\big]$ for any time large enough that~\ref{eq:strongMpembapw} holds. This implies that systems with this special condition display cooling that is exponentially faster. Kumar and Bechhoefer~\cite{Kumar2020} refer to this as the \textit{strong} Mpemba effect. 
+
+One important note is that although the existence of the Mpemba effect with one distance function implies its existence for every other distance function, $t^*$ need not be the same for all choices of $\mathcal D_c$; indeed, $t^*$ need not even be upper-bounded (although always finite). Vu and Hayakawa~\cite{Vu2025} recently described a \textit{thermomajorisation ordering} $\prec_{\pi_c}$ of all possible probability distributions $p(x,t)$. This ordering also qualifies how far a distribution is from $\pi_c$, and one can thus say that the \textit{thermomajorisation Mpemba effect} occurs if $p_h(x,t^*) \prec_{\pi_c} p_w(x,t^*)$ for some $t^*$. The thermomajorisation Mpemba effect implies the Mpemba effect, but the converse is not true, and the thermomajorisation Mpemba effect upper-bounds the time $t^*$ at which we can say that the hot system has cooled `more' than the warm system. Thus, at least a subset of all systems displaying the Mpemba effect must display the effect within a finite time.
+
+\section{The Langevin equation}
+\begin{figure}
+    \includegraphics[width=0.48\textwidth]{{./Figures/chapter2/distances/distances_langevin.pdf}}
+    \includegraphics[width=0.48\textwidth]{{./Figures/chapter2/distances/distances_langevin_noMpemba.pdf}}
+    \caption{\textit{Distance curves based on \num{5000} Langevin integrations of the Mpemba effect, using the same potentials as in Fig.~\ref{fig:mpembaFPE}. The solutions to the FPE are overlaid in low opacity. One observes that the results from integrating the Langevin equation are similar to those from numerically solving the FPE, but the Langevin simulations are noisier and have a finite noise floor owing to the finite number of integrations. The noise floor scales with the number of particles as $\order{\sqrt{N}}$.}}
+    \label{fig:mpembaLangevin}
+\end{figure}
+
+The Fokker-Planck equation~\ref{eq:FPE} describes the probability density of Brownian particles, but cannot describe the actual motion of the particles. This is particularly problematic because for the results of the FPE to hold, one would need an infinite number of observations of diffusing Brownian particles. To describe a finite number of particles, we instead use the \textit{Langevin equation}, a stochastic differential equation that always has a correspondence with the FPE. More specifically, the Langevin equation
+\begin{equation}
+    x(t+\Delta t) = \frac{F(x(t))}{\gamma}\Delta t + \sqrt{2D\Delta t}\xi(t),
+\end{equation}
+with $\xi(t)\sim \mathcal N[0,1]$ being drawn from a normal distribution with unit variance and zero mean, corresponds exactly to~\ref{eq:FPE} when $\Delta t\rightarrow 0$. The noise $\xi(t)$ means that this equation does not have an exact solution, and the trajectory defined by $x(t)$ will, with probability one, be continuous everywhere and differentiable nowhere. Solving the Langevin equation numerically is done by \textit{Euler-Maruyama integration}, where we solve for a discrete series of timesteps
+\begin{equation}
+    x_{t+\Delta t} = \frac{F(x_t)}{\gamma}\Delta t + \sqrt{2D\Delta t}\xi_t. \label{eq:discreteLangevin}
+\end{equation}
+Using $\xi_t$ in this equation means that we implicitly use the It\^o convention (which preserves causality, at the cost of breaking certain integration conventions --- see chapter 14 of van Kampen~\cite{vanKampen2011}) for integrating stochastic differential equations. An individual trajectory is not by itself particularly insightful, but we can construct empirical probability densities if we have a large number of them, and in the limit of an infinite number of trajectories, the empirical probability density will solve the FPE~\ref{eq:FPE}. 
+
+Using the Langevin equation rather than the Fokker-Plank equation for simulations is particularly desirable given the similarity between the analysis on integrated Langevin trajectories and those obtained from an experiment. We will compare the results from simulations with experimental results in chapter 3. An example of the Mpemba effect is shown in Fig.~\ref{fig:mpembaLangevin}
+
+\section{Previous work}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{{./Figures/chapter2/asymmetricDoubleWellPotential/asymmetricWellPotential.pdf}}
+    \caption{\textit{The potential Bechhoefer and Kumar~\cite{Kumar2020} used, described in eq.~\ref{eq:asymmetricDoubleWellPotential}. We also illustrate the box constraint and the maximum slopes.}}
+    \label{fig:asymmetricDoubleWellPotential}
+\end{figure}
+We describe in this section the work of Bechhoefer and Kumar~\cite{Kumar2020}. The experiment Bechhoefer and Kumar did dealt with a continuous distribution, using a virtual force generated by a feedback optical trap. The way one then confirms that the Mpemba effect for a potential $U(x)$ with this system is as follows:
+\begin{enumerate}
+    \item Draw a position $x_0$ from initial distribution,
+    \[\pi_h(x)=\pi(x;T_h) = \frac{1}{Z_h} e^{-U(x)/k_BT_h}.\]
+    \item Place the particle at $x_0$
+    \item Allow the particle to diffuse under the potential $U(x)$ long enough that the distribution $p(x,t)$ relaxes to steady state
+    \item Repeat for a large number of times to create an ensemble.
+\end{enumerate}
+While feedback optical traps allow for near-arbitrary $F(x,t)$, there are two physical constraints placed on the force. 
+
+First, since the feedback trap relies on a linear approximation of the force a bead experiences in an optical trap, the feedback force will not be accurate if the particle is far enough from the centre of the trap that the linear approximation is invalid. Since in the linear approximation the force is proportional to the distance from the trap centre, this translates to a cap on the magnitude of the force the bead can experience, $\abs{F} \leq F_{\max}$. 
+
+Second, the virtual force relies on feedback --- given a trap constant $k$, if the measured position of the particle is $x$ and the desired force is $F(x)$, the trap centre is moved to $x_0 = x-F(x)/k$. However, measurement and computation takes a finite amount of time $\Delta t$, so in order for the imposed force to be approximately accurate to the desired force field, we require the feedback time $\Delta t$ to be much smaller than the relaxation time of the bead $t_r = \gamma/k$. Since the derivative of the force $\abs{F'}=k=\frac{\gamma}{t_r} \ll \frac{\gamma}{\Delta t}$, this then places a constraint on the magnitude of the derivative of the force, or the curvature of the potential. 
+
+The final constraint has to do with choosing an initial distribution $p(x,0) = \pi(x;T_h)$. Since the response of the QPD to the bead's position is nonlinear over large distances, $x$ must be small enough that the measurement is accurate. This is not a problem in general for potentials that grow asymptotically in either direction; it is extremely unlikely that a bead will go far enough from the calibration region that the QPD response will not be linear. However, if $T_h$ is very large, then $\pi_h(x)$ will be approximately uniform, and this means that there is a reasonable probability that the bead could be given an initial position that is outside the calibration region. To prevent this, Kumar and Bechhoefer made use of a \textit{box}: a domain $\mathcal B = [x_{\min}, x_{\max}]$ such that $P(x\notin\mathcal B) = 0$ at any time. This is equivalent to using a potential $U_{\mathcal B}(x)$, where
+\begin{equation}
+    U_{\mathcal B}(x) = \begin{cases}
+        U(x),& x\in\mathcal B\\
+        \infty,& x\notin\mathcal B
+    \end{cases}.
+\end{equation}
+Of course, since we cannot actually impose arbitrarily high forces, we cannot actually impose $U_{\mathcal B}(x)$, but we can choose $x_0$ to only lie inside $\mathcal B$ to impose this condition at the very beginning, and then rely on the fact that it is unlikely for the particle to move to a region of such high potential, so since $x\in\mathcal B$ for all times $t$ we can approximate $U(x)\approx U_{\mathcal B}(x)$. This assumption will, however, break down when we consider finite quenches. 
+
+With these two constraints in mind, one could find a potential $U(x)$ for which $a_2(T)$ is non-monotonic. A simple quadratic potential will not do; in fact, the solution to the FPE with $F(x)=-kx$ happens to be Boltzmann at every point in time, which means that there are no nonequilibrium effects whatsoever for this system. Bechhoefer and Kumar instead used an \textit{asymmetric double-welled potential},
+\begin{align}
+    U(x) &= \begin{cases}
+        F_{\max}(x-x_r)+U_0(x_r),& x > x_r\\
+        U_0(x),& x_l \leq x \leq x_r\\
+        -F_{\max}(x-x_l)+U_0(x_l),& x < x_l\\
+    \end{cases}\\
+    U_0(x) &= E_b\left[ 1-\left( \frac{x}{x_w} \right)^2 \right]^2 + \frac 12 \Delta E\left( \frac{x}{x_w} \right).\label{eq:asymmetricDoubleWellPotential}
+\end{align}
+This is plotted in fig.~\ref{fig:asymmetricDoubleWellPotential}.
+
+Here, $E_b=2k_BT_c$ is called the \textit{barrier energy} and determines the height of the barrier at $x\approx 0$; $\Delta E=1.3k_BT_c$ is called the \textit{tilt energy} and determines the relative depth of the two wells; $F_{\max} = 50k_BT_c/(2x_w)$ is the maximum force described earlier, and $x_l$ and $x_r$ are chosen so that $U(x)$ is $\mathcal C^1$ continuous everywhere. 
+This potential has two wells, one of which is at a higher energy than the other. At equilibrium, then, the probability mass in the left well will not be equal to the probability mass on the right. The two dominant modes of cooling (characterised by $\lambda_2$ and $\lambda_3$) then have an intuitive physical explanation, as outlined in Ch\'etrite et al~\cite{Chetrite2021}. The first phase of cooling involves a \textit{fast relaxation}, characterised by the high rate $\lambda_3$, where all of the probability mass immediately falls into the well it is closest to. The second phase of cooling, the \textit{slow phase} characterised by the lower value, $\lambda_2$, involves particles hopping over the barrier until the equilibrium mass ratios are reached. If one can choose an initial condition so that the probability masses in both wells are already at their equilibrium ratios at the end of the fast phase, this corresponds to the condition for the strong Mpemba effect, $a_2=0$. Vucelja and Walker formalised this intuition in their 2022 paper~\cite{Walker2022}, where they defined the right-well equilibrium probability mass
+\begin{equation}
+    \Pi_R(T) = \int_{x_b}^{x_{\max}} \pi(x;T)\dd{x},
+\end{equation}
+where $x_b$ is the position of the barrier (the local maximum). Given that $\lambda_2/D \rightarrow 0$, the intuition for the strong Mpemba effect can then be stated as
+\begin{equation}
+    \Pi_R(T_h) = \Pi_R(T_c).\label{eq:VuceljaMpemba}
+\end{equation}
+
+The box $\mathcal B$ is critical to Bechhoefer and Kumar's result; without it, $\Pi_R(T)$ grows monotonically and asymptotes at $\Pi_R(\infty)=1/2$. In particular, they defined an \textit{asymmetry parameter} $\alpha = \abs{\frac{x_{\max}}{x_{\min}}}$, and found that for specific choices of $\alpha$, the strong Mpemba effect could be achieved when $T_h \gg T_w$. Mathematically, this means that $a_2$ is actually a function of both $T$ and $\alpha$. Since the quench is instantaneous, $p(x,0)$ looks like a uniform distribution $\mathcal U[x_{\min}, x_{\max}]$. 
+
+\section{Extending Bechhoefer and Kumar's results to finite quenches}
+Physically, the approach stated thus far corresponds to an \textit{instantaneous} quench, a system that is initially at equilibrium in a bath of temperature $T_h$ and starts relaxing after the bath instantaneously cools to $T_c$. This is somewhat aphysical; real systems usually exist in baths that gradually cool, often in the Newtonian way. It therefore is interesting to consider how the dynamics of the system change if the bath temperature slowly decays with time. Since the Mpemba effect is a feature of nonequilibrium systems, one would expect that a system that is sufficiently slowly quenched should not display the Mpemba effect. Similarly, a quench that is sufficiently fast would display the Mpemba effect in a system that displays a Mpemba effect with an instantaneous quench. This therefore prompts the question of what the critical rate is where the hot and warm systems reach equilibrium at almost the same time. To implement this requires that we change Kumar and Bechoeffer's experiment.
+
+The na\"ive approach to add finite quench rates to Bechhoefer and Kumar's~\cite{Kumar2020} result is to simply make the diffusivity $D = k_BT_c/\gamma$ a function of time:
+\begin{equation}
+    D(t) = \frac{k_BT_ch(t; T_0)}{\gamma},
+\end{equation}
+where $h(t; T_0)$ is the \textit{quench function}, a dimensionless number defining the ratio of the bath temperature to the equilibrium temperature, $h(t; T_0) = T(t)/T_c$. The quench function is always a function of the initial temperature $T_0$ at which the initial Boltzmann distribution is set to. This has the effect of making the \textit{bath} temperature drop with time. For our purposes, the quench function must have the following properties:
+\begin{enumerate}
+    \item $h(0; T_0)=T_0/T_c$ (to ensure $T(0)=T_0$);
+    \item $h(t\rightarrow\infty; T_0) = 1$ (the bath must be fully quenched at a sufficiently large time);
+    \item $\pdv{h}{t} \leq 0$ (the bath temperature strictly does not increase, otherwise it would not be a quench);
+    \item $\pdv{h}{T_0} > 0$ if $h(t;T_0)>1$ (the quench function should take longer to reach one for higher $T_0$; this keeps us from using a quench function that itself displays the Mpemba effect).
+\end{enumerate}
+A natural quench function to use would be the one associated with Newtonian cooling, an exponential decay given by:
+\begin{equation}
+    h_N(t;T_0, \Lambda) = \left( \frac{T_0}{T_c} - 1 \right)e^{-\Lambda t} + 1.\label{eq:newtonianQuench}
+\end{equation}
+The quench rate $\Lambda$ here controls the rate of cooling. In general, since the defining properties of a quench function do not specify how quickly $h(t)$ approaches one, a parameter to define a cooling rate is useful. 
+
+Note that the time dependence of $D(t)$ on the right-hand side of the Fokker-Planck equation makes the separation \textit{ansatz}~\ref{eq:separationAnsatz} invalid. We therefore cannot use Lu and Raz's condition to determine the existence of a Mpemba effect given a nonzero quench rate. We also note that as $\Lambda\rightarrow\infty$, $h_N$ approaches the instantaneous quench,
+\begin{equation}
+    h_I(t;T_0) = \begin{cases}
+        \frac{T_0}{T_c},& t \leq 0\\
+        1,& t > 0
+    \end{cases}.\label{eq:instantaneousQuench}
+\end{equation}
+Similarly, as $\Lambda\rightarrow 0$, $h_N$ approaches a so-called \textit{adiabatic} quench, where
+\begin{equation}
+    h_A(t;T_0) = T_0/T_c.
+\end{equation}
+$\Lambda$ cannot be equal to zero as this would violate our second assumption about convergence to steady state, but for any nonzero $\Lambda$ the quench will decay to one after a sufficiently long time (even if this time is much greater than the protocol time $\tau$). We may view this quench as allowing the system to come to equilibrium at every instance in time. Since the Mpemba effect is a nonequilibrium phenomenon, no Mpemba effect can exist in this system. 
+
+Since we can choose a potential that displays a Mpemba effect under an instantaneous quench ($\Lambda \gg 0$) and we reason that the potential must never display the Mpemba effect under a sufficiently slow quench ($\Lambda \rightarrow 0$), we deduce that some critical $\Lambda^*$ exists below which the Mpemba effect exists and above which there is no Mpemba effect. 
+
+If we applied this to the system Bechhoefer and Kumar used to demonstrate the strong Mpemba effect, we would, however, find that there are major discrepancies. Recall the Langevin equation~\ref{eq:discreteLangevin} has two terms of comparable scale: the deterministic term $F(x_t)\Delta t/\gamma$ and the stochastic term $\sqrt{2k_BT(t)\Delta t/\gamma}\xi_t$. We observe that if the stochastic term is much greater than the deterministic term, we may approximate~\ref{eq:discreteLangevin} as 
+\begin{equation}
+    x_{t+\Delta t} = \sqrt{2D\Delta t}\xi_t,
+\end{equation}
+which is the expression for free diffusion. This means that particles are free to leave the box $\mathcal B$, and we can no longer approximate $U(x) \approx U_{\mathcal B}(x)$. This discrepancy manifests as an increase in the distance function, which is always supposed to reduce with time. In simulations, one may normally take care of this problem by setting appropriate boundary conditions, but there is no way to do this in an experiment. This then requires us to find a new form of potential, for which the box is not required to show the Mpemba effect. However, this does allow us to eliminate the box, which was somewhat aphysical in the first place.
+
+\section{Requirements for a potential}
+\begin{figure}
+    
+\end{figure}
+More precisely, we must find a potential $U$ and define a domain $\mathcal B' \subset \mathbb R$ such that 
+\begin{equation}
+    \int_{\mathcal B'} \pi(x;T_h)\dd{x} > 1-\frac 1N,
+\end{equation}
+where $N$ is the number of trials. If this is the case, then the probability of a particle having position $x\notin\mathcal B'$ is small enough that it will not affect our results, and we are free to apply the quench as we please. This, however, is a worst-case estimate, since it assumes the distribution is at temperature $T_h$ over the entire protocol time $\tau$, so we may choose potentials whose probability masses are slightly below $1-1/N$ without affecting the results too much. In practice, this means that $\mathcal B'$ is large and $T_h$ is small, since the distribution $\pi(x;T_h)$ has its mass spread out over a larger area as $T_h$ increases. 
+
+To identify candidate potentials, we perform a number of tests before running a simulation. The first is to check the non-monotonicity of the $a_2$ coefficient associated with the potential. Ideally, one is looking for a strong Mpemba effect, so we search for potentials where $a_2(T_h) = 0$ for some sufficiently small $T_h$. The asymmetric double-welled potential fails to satisfy these criteria, as $a_2(T)$ is not monotonic if $x_{\min}$ and $x_{\max}$ are sufficiently large. We find the $a_2$ coefficients by discretising the Fokker-Planck operator into a $\mathbb W$ matrix, following Grima and Newman's~\cite{Grima2004} technique, and use standard numerical libraries to find eigenvalues and eigenvectors. 
+
+One of the key differences between experimental detection of the Mpemba effect and theory is the existence of a \textit{noise floor}, resulting from the finite number of trials that can be done (or the finite number of integrations, for simulations). This results in a noise floor that scales like $\order{\sqrt{N_b/N}}$~\cite{Kumar2020} with $N_b$ the number of histogram bins and $N$ the number of trials. If the crossing predicted by the Fokker-Planck equation occurs below this noise floor, the Mpemba effect will be invisible. Because of the $1/\sqrt N$ scaling, it becomes progressively less feasible to lower the noise floor. To ensure that the Mpemba effect is as prominent as possible, we must therefore require more criteria.
+
+The first criterion is to only choose potentials that demonstrate a strong Mpemba effect, because exponentially faster cooling is expected to be much more visible. We can do this simply by checking whether there exists $T^*$ such that $a_2(T^*)=0$ for some sufficiently low $T^*$. However, this proves to be insufficient for a large class of potentials. The reason for this is the fact that the crossing between the hot and warm curves is predicted to occur at a distance lower than the noise floor. A crossing that occurs in this region would be undetectable with a reasonable number of Langevin integrations, even if the exponentially faster nature of the cooling would be visible in the long run. 
+
+This yields the first assumption that we may use to modify the potentials we initially used. The intuition for the strong Mpemba effect that we outlined in eq.~\ref{eq:VuceljaMpemba} can be slightly modified. Because of the constraints on maximum slopes, we may view any potential we choose as a perturbation on the absolute value function $U_0(x)=F_{\max}|x|$. The details of $U(x)$ matter progressively less at higher and higher temperatures; consequently, we may approximate
+\begin{align}
+    \Pi_R(T_h) &\rightarrow \frac{\int_{0}^{\infty} \exp(-F_{\max}|x|/k_BT_h)\dd{x}}{\int_{-\infty}^{\infty} \exp(-F_{\max}|x|/k_BT_h)\dd{x}}\\
+    &= \frac 12.
+\end{align}
+If, however, we changed the right slope so that it was some fraction $f=\frac{F_{\mathrm{right}}}{F_{\max}}$ of the maximum slope, this formula is modified:
+\begin{align}
+    \Pi_R(T_h) &\rightarrow \frac{\int_{0}^{\infty} \exp(-fF_{\max}|x|/k_BT_h)\dd{x}}{\int_{-\infty}^{0} \exp(-F_{\max}x/k_BT_h)\dd{x}+\int_{0}^{\infty} \exp(-F_{\max}x/k_BT_h)\dd{x}}\\
+    &= \frac 1{1+f},
+\end{align}
+as $T_h\rightarrow\infty$. The rate $\lambda_3$ corresponds to a `fast' state of cooling where all of the probability mass falls into the closest well to it. It was stated earlier that if this ratio matched with the equilibrium mass ratio, we could expect a strong Mpemba effect. Indeed, we do find that this condition alone allows us to reduce the high temperature necessary from $T_h = 1000T_c$ to $T_h \approx 22T_c$. 
+
+Further reductions in the maximum temperature can be achieved by adding a cubic `bump' to the end of the potential. This creates a metastable state where probability mass accumulates after the fast step. With these additions, we can reduce the maximum temperature to about $T_h \approx 14 T_c$. 
+
+% The difference between \ref{eq:strongMpembaph} and \ref{eq:strongMpembapw} gives us the following expression (with $V_i = \ev{\fdv{\mathcal D_c}{v_i}[\pi_c], v_i}$):
+% \begin{equation}
+%     \Delta\mathcal D_c \approx [a_3(T_h)-a_3(T_w)]V_3e^{-\lambda_3 t} - a_2(T_w)V_2e^{-\lambda_2t}
+% \end{equation}
+% for times sufficiently above $1/\lambda_4$ that truncating higher-order terms is justified. The first term clearly decays for times sufficiently above $1/\lambda_3$, but if $1/\lambda_3$ is comparable to $1/\lambda_2$, the third eigenmode may be significant enough that it obscures the Mpemba effect despite the exponentially faster cooling in the long time. Moreover, if $a_2(T_w)V_2$ is very small compared to $[a_3(T_h)-a_3(T_w)]V_3$, the Mpemba effect may be obscured even if $\lambda_2\ll \lambda_3$. 
+
+\printbibliography
+\end{document}
