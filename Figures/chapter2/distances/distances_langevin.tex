@@ -1,0 +1,27 @@
+\documentclass{standalone}
+
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$t$, ylabel=$\mathcal L_1$ distance, axis x line=bottom, axis y line=left, ymin=0.01]
+        \addplot[thick, red] table[x=t, y=h, col sep=comma]{langevin_distances.csv};
+        \addlegendentry{$\mathcal D_c[p_h]$};
+        \addplot[thick, blue] table[x=t, y=w, col sep=comma]{langevin_distances.csv};
+        \addlegendentry{$\mathcal D_c[p_w]$};
+        \addplot[red!40] table[x=t, y=h, col sep=comma]{distances.csv};
+        \addplot[blue!40] table[x=t, y=w, col sep=comma]{distances.csv};
+        % \addlegendentry{$\mathcal D_c[p_w]$};
+        \draw(axis cs: 0.0011,0.085) circle(0.18cm) node(crossing){};
+        \draw[<-] (crossing.north east) -- (axis cs:0.01,0.2) node[above](end){Mpemba effect};
+    \end{loglogaxis}
+
+    
+\end{tikzpicture}
+\end{document}

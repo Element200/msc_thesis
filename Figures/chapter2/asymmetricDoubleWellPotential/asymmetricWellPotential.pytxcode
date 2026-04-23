@@ -1,0 +1,69 @@
+=>PYTHONTEX#py#default#default#0#code#####17#
+import mpemba
+import sympy as sym
+x = sym.symbols('x')
+min_extent=-2
+max_extent=+3
+max_y_extent=110
+line_extensions=0.25
+potential = mpemba.special_potentials.AsymmetricDoubleWellPotential(E_barrier=10, E_tilt=5, x_well=1)
+lower_well_y = potential.U(potential.x_well)
+upper_well_y = potential.U(-potential.x_well)
+
+print(fr"\addplot[domain={potential.x_l}:{potential.x_r}, samples=200]{{{potential.U_0(x)}}};".replace("**", "^"))
+print(fr"\addplot[domain={min_extent}:{potential.x_l}, red]{{{potential.U_0(potential.x_l)-potential.F_left*(x-potential.x_l)}}};")
+print(fr"\addplot[domain={potential.x_r}:{max_extent}, red]{{{potential.U_0(potential.x_r)+potential.F_right*(x-potential.x_r)}}};")
+print(fr"\addplot[domain={min_extent-line_extensions}:{min_extent}, red, dashed]{{{potential.U_0(potential.x_l)-potential.F_left*(x-potential.x_l)}}};")
+print(fr"\addplot[domain={max_extent}:{max_extent+line_extensions}, red, dashed]{{{potential.U_0(potential.x_r)+potential.F_right*(x-potential.x_r)}}};")
+
+print(fr"\draw[->, thick] ")
+print(fr"(axis cs:{min_extent},{potential.U_0(potential.x_l)-potential.F_left*(min_extent-potential.x_l)}) -- node[at end, right]{{$\infty$}} ")
+print(fr"(axis cs:{min_extent},{max_y_extent});")
+print(fr"\draw[->, thick] ")
+print(fr"(axis cs:{max_extent},{potential.U_0(potential.x_r)+potential.F_right*(max_extent-potential.x_r)}) -- node[at end, left]{{$\infty$}} ")
+print(fr"(axis cs:{max_extent},{max_y_extent});")
+print()
+print(fr"\draw[<->, thick]")
+print(fr"(axis cs:0,0) -- node[left, blue]{{\small $E_b$}}")
+print(fr"(axis cs:0,{potential.E_barrier});")
+print(fr"\draw[dashed]")
+print(fr"(axis cs:-{potential.x_well+0.1},{lower_well_y}) -- node{{}} ")
+print(fr"(axis cs:{potential.x_well+0.2},{lower_well_y});")
+print(fr"\draw[dashed]")
+print(fr"(axis cs:-{potential.x_well-0.15},{upper_well_y}) -- node{{}} ")
+print(fr"(axis cs:-{potential.x_well+0.1},{upper_well_y});")
+print(fr"\draw[<->, thick]")
+print(fr"(axis cs:-{potential.x_well},{upper_well_y}) -- node[left, blue]{{\small $\Delta E$}}")
+print(fr"(axis cs:-{potential.x_well},{lower_well_y});")
+print(fr"\node at (axis cs:0,{potential.E_barrier-1})[above] {{\small $U_0(x)$}};")
+print(fr"\draw[<->, thick]")
+print(fr"(axis cs:{min_extent},-4) -- node[below]{{\small $x_{{\min}}$}}")
+print(fr"(axis cs:0,-4);")
+print(fr"\draw[<->, thick]")
+print(fr"(axis cs:0,-4) -- node[below]{{\small $x_{{\max}}$}}")
+print(fr"(axis cs:{max_extent},-4);")
+=>PYTHONTEX:SETTINGS#
+version=0.18
+outputdir=pythontex-files-asymmetricWellPotential
+workingdir=.
+workingdirset=false
+gobble=none
+rerun=default
+hashdependencies=default
+makestderr=false
+stderrfilename=full
+keeptemps=none
+pyfuture=default
+pyconfuture=none
+pygments=true
+pygglobal=:GLOBAL||
+fvextfile=-1
+pyconbanner=none
+pyconfilename=stdin
+depythontex=false
+pygfamily=py|python3|
+pygfamily=pycon|pycon|
+pygfamily=sympy|python3|
+pygfamily=sympycon|pycon|
+pygfamily=pylab|python3|
+pygfamily=pylabcon|pycon|
