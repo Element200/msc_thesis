@@ -41,7 +41,7 @@
   >
 ]>
 <requests version="1.0">
-  <internal package="biblatex" priority="9" active="0">
+  <internal package="biblatex" priority="9" active="1">
     <generic>latex</generic>
     <provides type="dynamic">
       <file>sane_thesis.bcf</file>
@@ -51,11 +51,15 @@
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
+      <file>phys.dbx</file>
       <file>blx-compat.def</file>
       <file>biblatex.def</file>
       <file>standard.bbx</file>
       <file>numeric.bbx</file>
-      <file>numeric.cbx</file>
+      <file>numeric-comp.bbx</file>
+      <file>phys.bbx</file>
+      <file>numeric-comp.cbx</file>
+      <file>phys.cbx</file>
       <file>biblatex.cfg</file>
       <file>english.lbx</file>
     </requires>
