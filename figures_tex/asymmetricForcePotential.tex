@@ -20,7 +20,7 @@ import sympy as sym
 x = sym.symbols('x')
 min_extent=-2
 max_extent=+3
-max_y_extent=80
+max_y_extent=60
 line_extensions=0.25
 potential = mpemba.special_potentials.AsymmetricDoubleWellPotential(E_barrier=10, E_tilt=5, x_well=1, force_asymmetry=0.3)
 lower_well_y = potential.U(potential.x_well)

@@ -2,6 +2,7 @@
 
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage{xcolor}
 
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{positioning}
@@ -11,10 +12,12 @@
 
     % Define the nodes for the PDFs
     \node[anchor=south west,inner sep=0] (pdf1) at (0,0) {\includegraphics[width=0.25\textwidth]{pdf_i.pdf}};
+    \node[left=-1.1 of pdf1, yshift=-25pt] {\textcolor{red}{\footnotesize $\pi(x;T_h)$}}; 
     \node[anchor=south west,inner sep=0] (pdf2) at (4,0) {\includegraphics[width=0.25\textwidth]{pdf_t.pdf}};
+    \node[left=-1.1 of pdf2, yshift=-25pt] {\textcolor{orange}{\footnotesize $p(x,t)$}};
     % \node[anchor=south west,inner sep=0] (pdf3) at (8,0) {\includegraphics[width=0.25\textwidth]{pdf_m.pdf}};
     \node[anchor=south west,inner sep=0] (pdf4) at (8,0) {\includegraphics[width=0.25\textwidth]{pdf_s.pdf}};
-    
+    \node[left=-1.1 of pdf4, yshift=-25pt] {\footnotesize $\pi(x;T_c)$};
     % Draw the arrows connecting the PDFs
     \draw[->, thick] ([yshift=-0.5cm]pdf1.east) -- ([yshift=-0.5cm]pdf2.west);
     % \draw[->, thick] ([yshift=-0.5cm]pdf2.east) -- ([yshift=-0.5cm]pdf3.west);

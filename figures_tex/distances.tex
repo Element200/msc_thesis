@@ -10,13 +10,14 @@
 
 \begin{document}
 \begin{tikzpicture}
-    \begin{semilogxaxis}[xlabel=$t$, ylabel=$\mathcal L_1$ distance, axis x line=center, axis y line=left]
+    \begin{semilogxaxis}[xlabel=$t$, ylabel=$\mathcal L_1$ distance, axis x line=center, axis y line=left, ymax=1.25]
         \addplot[thick, red] table[x=t, y=h, col sep=comma]{distances.csv};
-        \addlegendentry{$\mathcal D_c[p_h]$};
+        % \addlegendentry{$\mathcal D_c[p_h]$};
         \addplot[thick, blue] table[x=t, y=w, col sep=comma]{distances.csv};
-        \addlegendentry{$\mathcal D_c[p_w]$};
+        % \addlegendentry{$\mathcal D_c[p_w]$};
         \draw(axis cs: 0.0008001,0.09135) circle(0.1cm) node(crossing){};
         \draw[<-] (crossing) -- (axis cs:0.01,0.4) node[above](end){Mpemba effect};
+        \draw[<-] (crossing) -- (axis cs:0.0008001,0.2) node[above](end2){$t^*$};
     \end{semilogxaxis}
 
     
