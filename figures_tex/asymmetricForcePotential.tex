@@ -21,7 +21,7 @@ x = sym.symbols('x')
 min_extent=-2
 max_extent=+3
 max_y_extent=60
-line_extensions=0.25
+line_extensions=0.3
 potential = mpemba.special_potentials.AsymmetricDoubleWellPotential(E_barrier=10, E_tilt=5, x_well=1, force_asymmetry=0.3)
 lower_well_y = potential.U(potential.x_well)
 upper_well_y = potential.U(-potential.x_well)
@@ -32,13 +32,13 @@ print(fr"\addplot[domain={potential.x_r}:{max_extent}, olive]{{{potential.U_0(po
 print(fr"\addplot[domain={min_extent-line_extensions}:{min_extent}, red, dashed]{{{potential.U_0(potential.x_l)-potential.F_left*(x-potential.x_l)}}};")
 print(fr"\addplot[domain={max_extent}:{max_extent+line_extensions}, olive, dashed]{{{potential.U_0(potential.x_r)+potential.F_right*(x-potential.x_r)}}};")
 
-print(fr"\draw[->, thick] ")
-print(fr"(axis cs:{min_extent},{potential.U_0(potential.x_l)-potential.F_left*(min_extent-potential.x_l)}) -- node[at end, right]{{$\infty$}} ")
-print(fr"(axis cs:{min_extent},{max_y_extent});")
-print(fr"\draw[->, thick] ")
-print(fr"(axis cs:{max_extent},{potential.U_0(potential.x_r)+potential.F_right*(max_extent-potential.x_r)}) -- node[at end, left]{{$\infty$}} ")
-print(fr"(axis cs:{max_extent},{max_y_extent});")
-print()
+# print(fr"\draw[->, thick] ")
+# print(fr"(axis cs:{min_extent},{potential.U_0(potential.x_l)-potential.F_left*(min_extent-potential.x_l)}) -- node[at end, right]{{$\infty$}} ")
+# print(fr"(axis cs:{min_extent},{max_y_extent});")
+# print(fr"\draw[->, thick] ")
+# print(fr"(axis cs:{max_extent},{potential.U_0(potential.x_r)+potential.F_right*(max_extent-potential.x_r)}) -- node[at end, left]{{$\infty$}} ")
+# print(fr"(axis cs:{max_extent},{max_y_extent});")
+# print()
 print(fr"\draw[<->, thick]")
 print(fr"(axis cs:0,0) -- node[left, blue]{{\small $E_b$}}") 
 print(fr"(axis cs:0,{potential.E_barrier});")

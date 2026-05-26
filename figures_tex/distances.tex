@@ -11,13 +11,14 @@
 \begin{document}
 \begin{tikzpicture}
     \begin{semilogxaxis}[xlabel=$t$, ylabel=$\mathcal L_1$ distance, axis x line=center, axis y line=left, ymax=1.25]
-        \addplot[thick, red] table[x=t, y=h, col sep=comma]{distances.csv};
+        \addplot[thick, red] table[x=t, y=h, col sep=comma]{avinashianDistances_FPE.csv};
         % \addlegendentry{$\mathcal D_c[p_h]$};
-        \addplot[thick, blue] table[x=t, y=w, col sep=comma]{distances.csv};
+        \addplot[thick, blue] table[x=t, y=w, col sep=comma]{avinashianDistances_FPE.csv};
         % \addlegendentry{$\mathcal D_c[p_w]$};
-        \draw(axis cs: 0.0008001,0.09135) circle(0.1cm) node(crossing){};
-        \draw[<-] (crossing) -- (axis cs:0.01,0.4) node[above](end){Mpemba effect};
-        \draw[<-] (crossing) -- (axis cs:0.0008001,0.2) node[above](end2){$t^*$};
+        \draw[thick](axis cs: 0.00038,0.135) circle(0.1cm) node(crossing){};
+        \draw[<-, olive] (crossing) -- (axis cs:0.001,0.4) node[above, color=olive](end){Mpemba effect};
+        \draw[dashed, thick] (crossing) -- (axis cs:0.00038,0) node[above left](end2){$t^*$};
+        %(axis cs:0.0008001,0.4) node[right](end2){$t^*$};
     \end{semilogxaxis}
 
     
