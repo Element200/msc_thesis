@@ -29,12 +29,13 @@
 \title{Anomalous cooling in colloids quenched at finite rates}
 \author{Siddharth Sanjay Sane}
 \previousdegrees{%
-    B.Sc. (Hons.), Azim Premji University, 2020}
+    B.Sc. (Hons.), Azim Premji University, 2023}
 \degree{Master of Science}
 \department{Department of Physics}
 \faculty{Faculty of Science}
 \copyrightyear{2026}
 \semester{Summer 2026}
+\keywords{Mpemba effect; finite quenches; nonequilibrium statistical mechanics}
 
 \committee{
     \chair{Pamela Isely}{Assistant Professor, Computing Science}
@@ -57,13 +58,17 @@
 %\clearpage
 
 \begin{abstract}
-Abstract paragraphs should be unindented. Master's abstracts are limited to 150 words; the limit is 350 words for doctoral abstracts. Abstract text must fit on a single page.
+% Abstract paragraphs should be unindented. Master's abstracts are limited to 150 words; the limit is 350 words for doctoral abstracts. Abstract text must fit on a single page.
+The Mpemba effect is a phenomenon where initially hotter systems can relax faster than initially cooler systems, \textit{ceteris paribus}. The phenomenon defies both intuition and conventional laws of equilibrium-like cooling, and its exact mechanism --- and even its very existence --- are the subject of much heated discussion. However, many systems display the Mpemba effect, motivating a general theory of nonequilibrium cooling. In the last decade, many advancements have been made to this end, including a general theoretical framework for the existence of the Mpemba effect in Markov systems and experimental evidence for the Mpemba effects in noninteracting one-dimensional colloids. 
+
+However, the theoretical and experimental landscape of today largely assumes that cooling systems are coupled to baths that are instantaneously quenched. This assumption is aphysical, and we seek to correct it by studying, numerically and experimentally, the effects of finite-rate quenches. In this thesis, we build on previous work with numerical simulations and analytic solutions and derive constraints on systems for experimental results.
+
 \end{abstract}
 
 
-\begin{dedication}
-This is an optional page. Use your choice of paragraph style for text on this page.
-\end{dedication}
+% \begin{dedication}
+% This is an optional page. Use your choice of paragraph style for text on this page.
+% \end{dedication}
 
 
 \begin{acknowledgements}This is an optional page. Use your choice of paragraph style for text on this page.
@@ -268,14 +273,14 @@ Note that Lu and Raz do not require $\mathscr D$ to be a metric; $\mathscr D$ ne
 
 Examples of the distance function $\mathscr D$ include
 \begin{itemize}
-    \item The $\mathcal L_1$ distance, 
+    \item The $\mathcal L_1$ distance\footnote{More generally, the $\mathcal L_k$ distance is defined as $\mathscr D_{\mathcal L_p}[p_1,p_2]=\left[ \int_{\mathbb R} \abs{p_1(x)-p_2(x)}^k\dd{x} \right]^{1/k}$. It is, however, rarely useful to use a higher norm than the $\mathcal L_1$ norm.}, 
     \begin{equation}
         \mathscr D_{\mathcal L_1}[p_1,p_2] = \int_{\mathbb R} |p_1(x)-p_2(x)|\dd{x};\label{eq:L1definition}
-    \end{equation}\footnote{More generally, the $\mathcal L_k$ distance is defined as $\mathscr D_{\mathcal L_p}[p_1,p_2]=\left[ \int_{\mathbb R} \abs{p_1(x)-p_2(x)}^k\dd{x} \right]^{1/k}$. It is, however, rarely useful to use a higher norm than the $\mathcal L_1$ norm.}
-    \item The Kullback-Leibler divergence, 
+    \end{equation}
+    \item The Kullback-Leibler divergence\footnote{Computing the KL divergence with empirical PDFs can be tricky as $p_2(x_i)=0$ for any bin $[x_i-\Delta x/2, x_i+\Delta x/2]$ will result in $\mathscr D_{\mathrm{KL}}$ diverging. To avoid such divergences, we add a post-processing step where we add a single `pseudocount' to each empty bin. If, instead, $p_1(x_i)=0$ has any zero counts, we define $p_1(x_i)\log(p_1(x_i)/p_2(x_i)):=0$. Often while computing the KL divergence numerically, expressing the integrand of Eq.~\ref{eq:KLdefinition} as $p_1\log(p_1)-p_2\log(p_2)$ instead of using a fraction in the log avoids a number of computational bugs.}, 
     \begin{equation}
         \mathscr D_{\mathrm{KL}}[p_1,p_2] = \int_{\mathbb R} p_1(x)\ln\left[ \frac{p_1(x)}{p_2(x)} \right]\dd{x};\label{eq:KLdefinition}
-    \end{equation}\footnote{Computing the KL divergence with empirical PDFs can be tricky as $p_2(x_i)=0$ for any bin $[x_i-\Delta x/2, x_i+\Delta x/2]$ will result in $\mathscr D_{\mathrm{KL}}$ diverging. To avoid such divergences, we add a post-processing step where we add a single `pseudocount' to each empty bin. If, instead, $p_1(x_i)=0$ has any zero counts, we define $p_1(x_i)\log(p_1(x_i)/p_2(x_i)):=0$. Often while computing the KL divergence numerically, expressing the integrand of Eq.~\ref{eq:KLdefinition} as $p_1\log(p_1)-p_2\log(p_2)$ instead of using a fraction in the log avoids a number of computational bugs.}
+    \end{equation}
     \item The entropic distance from Lu and Raz~\cite{Lu2017}:
     \begin{equation}
         \mathscr D_{\mathrm{ent}}[p_1,p_2] = \frac{\ev{U}_{1}-\ev{U}_2}{\kB T} - \int_{\mathbb R} \left[ p_1(x)\ln [p_1(x)]-p_2(x)\ln [p_2(x)] \right]\dd{x},
@@ -297,7 +302,7 @@ for all $t>t^*$, for some distance function $\mathcal D_c$. Since
 \begin{equation}
     \mathcal D_c[p_h(x,0)] > \mathcal D_c[p_w(x,0)]
 \end{equation}
-by construction, the distance curves of a system displaying a Mpemba effect must cross an odd number of times\footnote{As the hot system may be closer to equilibrium for a short time before the warm system overtakes it again, one must require an odd number of crossings rather than simply requiring at least one crossing.}, crossing for the last time at $t=t^*$, when $\mathcal D_c[p_h(x,t^*)]=\mathcal D_c[p_w(x,t^*)]$~\cite{Klich2019}. Figure~\ref{fig:mpembaFPE}(a) shows an example of the signature of the Mpemba effect using distance curves. The level and time of crossing can vary based on the choice of distance function. However, since the Mpemba effect describes something physical, the Mpemba effect should not depend on the choice of distance function. In the next section, we demonstrate that, provided the three properties described here hold, the Mpemba effect is agnostic to the choice of $\mathscr D$. We will later also mention a nonexample of a distance function, and how ignoring any of the three axioms described here can lead to spurious Mpemba effects.
+by construction, the distance curves of a system displaying a Mpemba effect must cross an odd number of times\footnote{As the hot system may be closer to equilibrium for a short time before the warm system overtakes it again, one must require an odd number of crossings rather than simply requiring at least one crossing.}, crossing for the last time at $t=t^*$, when $\mathcal D_c[p_h(x,t^*)]=\mathcal D_c[p_w(x,t^*)]$~\cite{Klich2019}. Figure~\ref{fig:mpembaFPE}(a) shows an example of the signature of the Mpemba effect using distance curves. The level and time of crossing can vary based on the choice of distance function. However, since the Mpemba effect describes something physical, the Mpemba effect should not depend on the choice of distance function. In the next section, we demonstrate that, provided the three properties described here hold, the Mpemba effect is agnostic to the choice of $\mathscr D$. We will later also mention a nonexample of a distance function, and how ignoring any of the three axioms described here can potentially lead to claims of spurious Mpemba effects.
 
 \section{Conditions for the existence of the Mpemba effect}
 \begin{figure}
@@ -348,7 +353,7 @@ for some $t^*<\infty$. However, although $e^{-\lambda_2t^*}$ is strictly positiv
     \abs{a_2(T_h)} \leq \abs{a_2(T_w)}.
 \end{equation}
 
-Put differently, the condition reduces to the statement that $\abs{a_2(T)}$ is nonmonotonic in $T$.  Since we have not made use of any particular form of $\mathcal D_c$ except for the properties we required, the Mpemba effect is independent of the choice of distance function\footnote{This proof is not quite as rigorous as Lu and Raz's, and ignores the convexity that they required of the distance function. If the distance function is not convex, the terms that we truncated may add to something that goes to zero more slowly than $a_2Ve^{-\lambda_2t}$. See the supplementary information in Lu and Raz for details~\cite{Lu2017}.}. For example, if we choose the $\mathcal L_1$ distance, then
+Put differently, the condition reduces to the statement that $\abs{a_2(T)}$ is nonmonotonic in $T$.  Since we have not made use of any particular form of $\mathcal D_c$ except for the properties we required, the Mpemba effect is independent of the choice of distance function\footnote{This proof is not quite as rigorous as Lu and Raz's, and ignores the convexity that they required of the distance function. If the distance function is not convex, the terms that we truncated may sum to a quantity that goes to zero more slowly than $a_2Ve^{-\lambda_2t}$. See the supplementary information in Lu and Raz for details~\cite{Lu2017}.}. For example, if we choose the $\mathcal L_1$ distance, then
 \begin{equation}
     \mathcal D_c[\pi_c+a_2v_2e^{-\lambda_2t}] = \int_{\mathbb R}\abs{\pi_c+a_2v_2e^{-\lambda_2t}-\pi_c}\dd{x} = \abs{a_2}e^{-\lambda_2t}\int_{\mathbb R}\abs{v_2(x)}\dd{x}
 \end{equation}
@@ -408,6 +413,17 @@ Thus, $\mathcal D_{\mathcal L_1}$ is convex in $p$. Proving the second property 
 
 One important note is that although the existence of the Mpemba effect with one distance function implies its existence for every other distance function, $t^*$ need not be the same for all choices of $\mathcal D_c$; indeed, $t^*$ need not even be upper-bounded (although always finite). Vu and Hayakawa~\cite{Vu2025} recently described a \textit{thermomajorisation ordering} $\prec_{\pi_c}$ of all possible probability distributions $p(x,t)$. This ordering also qualifies how far a distribution is from $\pi_c$, and one can thus say that the \textit{thermomajorisation Mpemba effect} occurs if $p_h(x,t^*) \prec_{\pi_c} p_w(x,t^*)$ for some $t^*$. The thermomajorisation Mpemba effect implies the Mpemba effect, but the converse is not true, and the thermomajorisation Mpemba effect upper-bounds the time $t^*$ at which we can say that the hot system has cooled `more' than the warm system. Thus, at least a subset of all systems displaying the Mpemba effect must display the effect within a finite time.
 
+\subsection{The average energy cannot be used to find a Mpemba effect}
+\begin{figure}
+    \includegraphics[width=\textwidth]{{Figures/chapter2/averageEnergy/averageEnergy.pdf}}
+    \caption[The average energy is a poor choice of distance function]{\small{The average energy is not a good way to measure the distance to equilibrium. We demonstrate a counterexample by using a \num{10000}-particle Langevin simulation of Kumar and Bechhoefer's experiment~\cite{Kumar2020}. (a) The three inset PDFs denote the same potential, Eq.~\ref{eq:asymmetricDoubleWellPotential} that Kumar and Bechhoefer used with $\alpha=|x_{\max}/x_{\min}|=9$. The three inset PDFs denote stages of cooling (the $x$ axis of each PDF is truncated for readability). The red PDF, the initial state, is more or less uniform, and cools to the black PDF, overlaid in all figures as dashed lines. We see that at an intermediate time, the relative heights of the taller peak in the blue PDF is very slightly higher than it would be at equilibrium. The relative numbers of particles in each well at the intermediate time perfectly lines up with the equilibrium average energy, and the energy difference is thus equal to zero \textit{even though the system has not finished relaxing}. (b) $\mathcal D_c[p(x,t)]$ for the same system. We see that the system does not actually demonstrate a Mpemba effect. This diagram is a reproduction of Fig. 7 in Teza et al.~\cite{Teza2026}.}}
+\end{figure}
+The distance function requires that we have access to the probability distribution of the system we are studying. However, finding the PDF associated with a thermodynamic system is not always tractable. For example, an $N$-spin Ising lattice has $2^N$ possible states, so the vector containing the probabilities associated with every possible state grows exponentially in memory. Thus, many consider it desirable to use another signature for the Mpemba effect. Equilibrium kinetic theory often defines the temperature of a gas in terms of the average kinetic energy of its molecules: $\ev{\text{K.E.}}=d\kB T/2$ for $d$ degrees of freedom by the equipartition theorem~\cite{Blundell2017}, suggesting $T\propto \ev{U}$ for a system with purely kinetic energy. While the temperature is not well-defined between the start and end times, the average energy,
+\begin{equation}
+    \bar E(t) = \ev{U}_{p(x,t)}=\int_{\mathbb R} U(x)p(x,t)\dd{x}
+\end{equation}
+certainly is. Moreover, the average energy of an equilibrium system does grow monotonically with temperature. Several authors have thus used crossings (or their lack thereof) in the average energy to argue for the existence or nonexistence of a Mpemba effect~\cite{Ohga2024,BaityJesi2019,Vadakkayil2021}. However, the average energy does not obey the third rule we required of distance functions: it is not guaranteed to decrease monotonically with time, and can thus erroneously lead one to believe there is a Mpemba effect when none exists. To show that the average energy is a poor choice of distance function, we use a system from Kumar and Bechhoefer's~\cite{Kumar2020} work, with a high value of the asymmetry parameter $\alpha=|x_{\max}/x_{\min}|$. As we will discuss in the next section, the first stage of cooling in a double-well potential is a fast stage where the particle falls into the closest possible well, before a slow stage, when particles hop over the barrier until equilibrium is reached. Thus, if $\Pi_R(T_h) > \Pi_R(T_c)$, amounting to using a large value of $\alpha$ in the potential Eq.~\ref{eq:asymmetricDoubleWellPotential} that Kumar and Bechhoefer chose, there would be a transient stage  of cooling at some time $t_t$ where there is \textit{more probability mass in a low-energy well than in equilibrium}, thus making the average energy lower than it should be in equilibrium. Thus, $\ev{U}_{p(x,t_t)} < \ev{U}_{\pi(x;T_c)}$. We illustrate this behaviour in Fig.~\ref{fig:averageEnergy}, noting that not only can the difference in average energies between $p(x,t)$ and the equilibrium state be zero even if $p(x,t)\neq \pi(x;T_c)$, violating the first assumption of positivity, but the Mpemba effect can be falsely predicted by the average energy. Kumar and Bechhoefer demonstrated that for large enough values of $\alpha$, the Mpemba effect vanishes~\cite{Kumar2020}, and for larger values of $\alpha$ the transient state will contain more probability mass in the lower-energy well. Thus, the average energy cannot be used in place of a distance function.
+
 \section{The Langevin equation}
 \begin{figure}
     \centering
@@ -431,7 +447,6 @@ The Fokker-Planck equation, Eq.~\ref{eq:FPE}, describes the probability density 
 
 The Langevin equation is derived from Newton's second law applied to a Brownian particle experiencing a drag with friction coefficient $\gamma$, but with an added term to account for random noise. Thus, the particle experiences two forces, a deterministic force $F(x)$ and a random force proportional to the normally-distributed $\xi(t)\sim \mathcal N[0,1]$. The scale of the random force is set by the diffusivity, which obeys the fluctuation-dissipation relationship with the drag constant $\gamma$ 
 If the force $F(x)$ were zero, we would expect that the average distance the particle travels after time $t$ is zero with a variance $2Dt=2t\kB T/\gamma$ in one dimension\footnote{In $d$ dimensions, the variance is $2dDt$}. 
-\marginnote{\small{I'm not sure what you meant by using $D$ and appealing to the fluctuation-dissipation theorem to derive 2.55?}}
 
 The Langevin equation is then given by writing out Newton's second law:
 \begin{equation}
@@ -553,17 +568,6 @@ The box $\mathcal B$ is critical to Bechhoefer and Kumar's result: without it, $
 
 A recent preprint~\cite{Liu2026} argued that the box is necessary to observe the Mpemba effect in a double-welled potential. We shall test their claim in Ch. 4.
 
-\section{The average energy cannot be used to find a Mpemba effect}
-\begin{figure}
-    \includegraphics[width=\textwidth]{{Figures/chapter2/averageEnergy/averageEnergy.pdf}}
-    \caption{\small{The average energy is not a good way to measure the distance to equilibrium. We demonstrate a counterexample by using a \num{10000}-particle Langevin simulation of Kumar and Bechhoefer's experiment~\cite{Kumar2020}. (a) The three inset PDFs denote the same potential, Eq.~\ref{eq:asymmetricDoubleWellPotential} that Kumar and Bechhoefer used with $\alpha=|x_{\max}/x_{\min}|=9$. The three inset PDFs denote stages of cooling (the $x$ axis of each PDF is truncated for readability). The red PDF, the initial state, is more or less uniform, and cools to the black PDF, overlaid in all figures as dashed lines. We see that at an intermediate time, the relative heights of the taller peak in the blue PDF is very slightly higher than it would be at equilibrium. The relative numbers of particles in each well at the intermediate time perfectly lines up with the equilibrium average energy, and the energy difference is thus equal to zero \textit{even though the system has not finished relaxing}. (b) $\mathcal D_c[p(x,t)]$ for the same system. We see that the system does not actually demonstrate a Mpemba effect. This diagram is a reproduction of Fig. 7 in~\cite{Teza2026}.}}
-\end{figure}
-The distance function requires that we have access to the probability distribution of the system we are studying. However, finding the PDF associated with a thermodynamic system is not always tractable. For example, an $N$-spin Ising lattice has $2^N$ possible states, and so the vector containing the probabilities associated with every possible state grows exponentially in memory. Thus, many consider it desirable to use another signature for the Mpemba effect. Equilbrium kinetic theory often defines the temperature of a gas in terms of the average kinetic energy of its molecules: $\ev{\text{K.E.}}=d\kB T/2$ for $d$ degrees of freedom by the equipartition theorem~\cite{Blundell2017}. While the temperature is not well-defined between the start and end times, the average energy,
-\begin{equation}
-    \bar E(t) = \ev{U}_{p(x,t)}=\int_{\mathbb R} U(x)p(x,t)\dd{x}
-\end{equation}
-certainly is\footnote{For the sake of having a dimensionless number instead of a number that scales with $\kB T_c$, we divide $\bar E(t)$ by the \textit{equilibrium average energy}, $\bar E_{\mathrm{eq}}=\int_{\mathbb R} U(x)\pi(x;T_c)\dd{x}$.}. Moreover, the average energy of an equilibrium system does grow monotonically with temperature. Several authors have thus used crossings (or their lack thereof) to discuss the existence or nonexistence of a Mpemba effect~\cite{Ohga2024,BaityJesi2019,Vadakkayil2021}. However, the average energy does not obey the third rule we required of distance functions: it is not guaranteed to decrease monotonically with time, and can thus erroneously lead one to believe there is a Mpemba effect when none exists. To show that the average energy is a poor choice of distance function, we choose $x_{\max}\gg x_{\min}$, so that the probability mass on the domain $[0,x_{\max}]$ is greater than in the domain $[x_{\min},0]$. As we discussed in the previous section, the first stage of cooling is a fast stage where the particle falls into the closest possible well, before the slow stage, when particles hop over the barrier until equilibrium is reached. Thus, if $\Pi_R(T_h) > \Pi_R(T_c)$, amounting to using a large value of $\alpha$ in the potential Eq.~\ref{eq:asymmetricDoubleWellPotential} that Kumar and Bechhoefer chose, there would be a transient stage of cooling where there are \textit{more particles in a low-energy well than in equilibrium}. Thus, $\ev{U}_{p(x,t)} < \ev{U}_{\pi(x;T_c)}$. We illustrate this behaviour in Fig.~\ref{fig:averageEnergy}, noting that not only can the difference in average energies between $p(x,t)$ and the equilibrium state be zero even if $p(x,t)\neq \pi(x;T_c)$, violating the first assumption of positivity, but the Mpemba effect can be falsely predicted by the average energy. Kumar and Bechhoefer demonstrated that for large enough values of $\alpha$, the Mpemba effect vanishes~\cite{Kumar2020}. Thus, the average energy cannot be used in place of a distance function.
-
 \section{Finite-rate quenches}
 Physically, the approach stated thus far corresponds to an \textit{instantaneous} quench, a system that is initially at equilibrium in a bath of temperature $T_h$ and starts relaxing after the bath instantaneously cools to $T_c$. However, real systems usually exist in baths that gradually cool, often in the Newtonian way that the temperature in Eq.~\ref{eq:harmonicFPE} evolves. The assumption of the bath diffusivity instantly dropping, potentially by several orders of magnitude, is rather aphysical. The approach outlined here thus applies to small particles in a bath, but not to bulk objects. In a bulk object, heat would have to diffuse from the bath into the bulk through a boundary, meaning that the temperature of a point within the surface would lag behind the bath temperature somewhat depending on how fast heat can flow through the object. For example, a cold piece of meat placed on a hot pan needs to cook for several minutes before the interior temperature is the same as the surface temperature. Teza et al. have previously considered how coupling to an external bath through a `boundary term' affects relaxation dynamics~\cite{Teza2023}. Thus, we consider how the dynamics of our system change if the bath temperature slowly decays with time. Since the Mpemba effect is a feature of nonequilibrium systems, one would expect that a system that is sufficiently slowly quenched should not display the Mpemba effect. Similarly, a quench that is sufficiently fast would display the Mpemba effect in a system that displays a Mpemba effect with an instantaneous quench. This therefore prompts the question of what the critical rate is where the hot and warm systems reach equilibrium at almost the same time. To implement this requires that we create a new version of Kumar and Bechhoefer's experiment.
 
@@ -629,7 +633,7 @@ which is the expression for free diffusion. This means that particles are free t
     \end{tikzpicture}
     \caption[Schematic of one-dimensional quench]{\small{A schematic of a way in which the system might cool. A one dimensional system lives on a plate of thickness $\ell$ and uniform temperature $T_h$. (a) At $t=0$, the plate is placed atop the XY plane, which is a thermal reservoir held at temperature $T_c$. (b) As the plate cools to $T_c$, heat flows upwards and reduces the bath temperature of the system.}}
 \end{figure}
-We claimed earlier that the Newtonian quench, Eq.~\ref{eq:newtonianQuench}, was a natural choice of quench function. But why this particular quench function, given that the Mpemba effect in our system relies on non-Newtonian cooling? We could, for example, choose a linear quench, $h(t; T_0, \Lambda) = \max(T_0/T_c(1-\Lambda t), 1)$. We will justify our choice of quench using a physical argument for how the bath might cool if its physical temperature were actually varied. 
+We claimed earlier that the Newtonian quench, Eq.~\ref{eq:newtonianQuench}, was a natural choice of quench function. But why this particular quench function, given that the Mpemba effect in our system relies on non-Newtonian cooling? We could, for example, choose a linear quench, $h(t; T_0, \Lambda) = \max(T_0/T_c(1-\Lambda t), 1)$. We will justify our choice of quench using a physical argument for how the bath might cool if it were actually cooling in a real medium. 
 
 Consider a one-dimensional system living on top of an infinitely wide plate of height $h$, as shown in the figure, that is at equilibrium at temperature $T_0$. The plate has thermal diffusivity $\alpha_T$ and thickness $\ell$. At $t=0$, the plate is placed atop the XY plane, which is a heat reservoir held at temperature $T_c$\footnote{We may perhaps assume the thermal diffusivity of the plane $\alpha_T'\gg \alpha_T$ so that it has a constant temperature $T_c$ over the timescale of cooling.}. Heat will then flow uniformly along the $z$ axis through the plate until the surface containing the system has cooled from temperature $T_0$ to temperature $T_c$. To find how the temperature of the plate evolves, we solve the heat equation with boundary conditions:
 \begin{align}
@@ -703,98 +707,114 @@ The precise form of $F(x)$ depends on the beam profile and the length regime; fo
 $w_0$, called the `beam waist', is related to the width of the Gaussian beam. Thus, $U(x)\sim -e^{-x^2}$. We plot a sketch of the trap potential in Fig.~\ref{fig:opticalFeedbackTrap}(b).
 These properties suggest that there is a maximum force $F_0$ beyond which the force reduces to zero. 
 
-\section{Feedback forces: a toy model}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\textheight]{{./Figures/chapter3/feedbackCart/feedbackCart.pdf}}
-    \caption[The overdamped feedback cart]{\textit{The overdamped feedback cart.}}\label{fig:feedbackCart}
-\end{figure}
-The carefull designed potentials in Ch. 2 are made possible using feedback. To understand how this is possible, suppose we have a system that allows one to impose a fixed force $F_m(x|X)$, but we can control the value of $X$. If we wanted to use this system to impose any arbitrary force $F(x)$, we must choose $X$ such that $F_m(x|X)=F(x)$. Based on measurements of $x(t)$, $X(x)$ is chosen so that $F_m(x|X(x))=F(x)$, where $F(x)$ is some arbitrary `target' force. 
+\section{Feedback traps}
+The theory we described requires that we build potentials that are considerably more complicated than the quadratic potentials that optical traps impose. The existence or lack thereof of the Mpemba effect is also quite sensitive to the choice of parameters defining the potential. We therefore outline a \textit{feedback trap}, a device that allows one to generate arbitrary potentials by changing a parameter in a potential dynamically with the measured position of a moving object.
 
-A toy example is an overdamped cart connected to a movable wall, as shown in fig.~\ref{fig:feedbackCart}. The force the spring imposes on the cart is given by Hooke's law,
-\begin{equation}
-    F_m(x|X(x)) = -k(x-X(x)) =F(x)\label{eq:feedbackEquation},
-\end{equation}
-and we can thus solve for the `protocol' $X(x)=x+F(x)/k$. However, this simple expression assumes we can instantaneously change $X$ with $x$. In practice, there is always a slight delay $\Delta t$ between the measurement of $x(t)$ and the movement of $X$ to the new target position $X(x(t))$. We can account for the constraint by reexpressing the feedback equation Eq.~\ref{eq:feedbackEquation} as
-\begin{equation}
-    F_m(x(t)|X(x(t-\Delta t)))=-k(x(t)-X(x(t-\Delta t))) = F(x(t)).
-\end{equation}
-We assume the cart is overdamped and moves on a track with friction coefficient $\gamma$, so that Newton's law, sans inertia term, reads
-\begin{align}
-    \gamma\dot x &= -k(x(t)-X(x))-k\dv{X}{t}\Delta t\\
-    &= -k(x(t)-X(x))-k\dot x\pdv{X}{x}\Delta t\\
-\end{align}
-Thus, $X(x(t)) =-(\gamma/k)\dot x -x(t) -\dot x\partial_x X$. If we could move $X$ with $x$ instantaneously, we could make the feedback force $F_f(x;X)=-k(x-X(x))$ indistinguishable from a true force. However, in practice there is always a small time $\Delta t$ between the measuring $x$ and moving the wall to $X(x)$. Thus, the modified expression is $X(x(t+\Delta t))=-(\gamma/k)\dot x -x(t) -\dot x\partial_x X$. Taylor-expanding $X(x(t))$,
-% \begin{align*}
-%     X(x(t))+\pdv{X}{x}\dot x\Delta t = -\frac \gamma k\dot x -x(t) -\dot x\partial_x X\\
-%     k
-% \end{align*}
-% where $k$ is the spring stiffness. To generate an arbitrary force, for example a cubic $F(x) = -ax^3-bx$, the position $x$ is measured and used to adjust the position of the wall $X$, by solving the equation $F_m(x|X)=F(x)$ for $X$:
-% \begin{align}
-%     -k(x-X) &= -ax^3-bx\\
-%     X(x) &= x - \frac ak x^3 - \frac bk x.
-% \end{align}
-% If $X$ is moved instantaneously with $x$, there would be no difference between this feedback system and an actual cubic force. However, there is in practice always some delay $\Delta t$ between the measurement of $x$ and the movement of the wall to $X(x)$. Thus, the force the object experiences at time $t$ is given by
-% \begin{equation}
-%     F_m(x|X) = -k[x(t)-X(x(t-\Delta t))].
-% \end{equation}
-% This is called a \textit{virtual force}. As $\Delta t\rightarrow 0$, the virtual force approaches the exact force $F(x)$. Otherwise, the virtual force will differ from the true force by 
-% \begin{align}
-%     F_m(x|X)-F(x) &= -k[x(t)-X(x(t-\Delta t))] + k(x(t)-X(x(t)))\\
-%     &= -k[X(x(t))-X(x(t-\Delta t))].
-% \end{align}
-% If we may assume that $x(t)$ and $X(x)$ are both smooth, we use the chain rule to expand the composition:
-% \begin{align}
-%     X(x(t-\Delta t)) &= X(x(t)) - \left[ \dv{X}{t} \right]_t\Delta t+\order{\Delta t^2}\\
-%     &= X(x(t))-\dot x(t)\Delta t\left[ \dv{X}{x} \right]_{x(t)} + \order{\Delta t^2}.
-% \end{align}
-% Thus, neglecting superlinear terms, the difference between forces is given by
-% \begin{align}
-%     F_m(x|X)-F(x) &\approx -k\dot x(t)\Delta t\left[ \dv{X}{x} \right]_{x(t)}.
-% \end{align}
-% For the cubic force example we considered, 
-% \begin{equation}
-%     \left[ \dv{X}{x} \right]_{x(t)} = 1-\frac bk - \frac{3a}k x^2(t).
-% \end{equation}
-% Thus,
-% \begin{align}
-%     F_m(x|X)-F(x) &= -k\dot x(t)\left[ 1-\frac bk - \frac{3a}k x^2(t) \right]\Delta t.
-% \end{align}
-% This difference goes to zero as $\Delta t\rightarrow 0$, but the $x^2$ dependence may cause the difference to be very large for large $x$. 
+Suppose we could move the trap centre $X$ defined in the previous section arbitrarily quickly based on instantaneous measurements of the position of the bead, $x$. We will describe how we can actually move the trap centre in the next section. We will assume the trap centre is always close enough to the bead centre that the quadratic approximation of the potential is reasonably good. The force the trap exerts on the bead at any point in time is given by $F_m(x|X)=-k(x-X)$, where $k$ is the trap constant of the beam, determined by the beam waist $w_0$. Suppose we desire that the bead behaved as if it existed in a potential $U(x)$ with a force profile $F(x)=-U'(x)$. Then we could equate the expression for $F_m$ and $F$ to obtain the expression $X(x) = x+F(x)/k$. Thus, at every point in time, the particle is \textit{actually} experiencing a force of $F_m(x|X)$, but it always behaves as if it is experiencing a force of $F(x)$. 
 
-% Assuming that the cart moves on a track with friction coefficient $\gamma$, Newton's second law reads
-% \begin{equation}
-%     m\ddot x = -\gamma\dot x + F_m(x|X) = -\gamma\dot x+F(x)-k\dot x(t)\left[ \dv{X}{x}\right]_{x(t)}\Delta t.
-% \end{equation}
-% From the simple harmonic oscillator, a damping coefficient
-% \begin{equation}
-%     \zeta = \frac{\gamma}{2\sqrt{mk}} = \frac{\gamma/m}{2\sqrt{k/m}}
-% \end{equation} 
-% is often defined. If $\zeta \gg 1$, the system is \textit{overdamped}: the inertia term $m\ddot x$ may be neglected. Removing the inertia and dividing throughout by $\gamma$, 
-% \begin{equation}
-%     \dot x = \frac{F(x)}{\gamma} + \underbrace{\frac{k}{\gamma}\Delta t\left[ \dv{X}{x} \right]_{x(t)}\dot x}_{\text{Correction term}}\label{eq:feedbackODE}
-% \end{equation}
-% The quantity $\gamma/k$ has dimensions of time and characterises the ratio of the friction to the spring stiffness. We call this quantity the \textit{relaxation time},
-% \begin{equation}
-%     t_r = \frac{\gamma}{k},
-% \end{equation}
-% and notice that the correction term vanishes if $\Delta t/t_r \ll 1$, reducing Eq.~\ref{eq:feedbackODE} to a simple first-order ODE representing asymptotic convergence. Thus, $\Delta t \ll t_r$ is the condition required for a virtual potential to be approximately equal to a true potential. 
+However, this expression assumes we can measure $x$ instantaneously and change $X$ in no time. In real experiments, discrete measurements of the position $x_n$ are made at intervals $\Delta t$, the measurements are noisy, and the trap position $X_n(x_{n-1})$ depends on the previous measurement and is constant over the time $\Delta t$. In this case, we call the potential the bead experiences a \textit{virtual potential}. Gavrilov et al.~\cite{Gavrilov2014} used the feedback trap built by Jun and Bechhoefer.~\cite{Jun2012}, which in turn built on the work of Cohen et al.~\cite{Cohen2005}, and showed that the difference between the virtual potential and the true potential is insignificant if the feedback time $\Delta t \ll t_r$, where the relaxation time $t_r=\gamma/k$. We usually quantify the difference between the virtual and true potentials with the feedback parameter $\alpha=\Delta t/t_r$, and require $\alpha\ll 1$. The approach outlined here yields two constraints on the form of the force $F(x)$.
+\begin{itemize}
+    \item For an arbitrary force function $F_m$, the equation $F_m(x|X)=F(x)$ only has solutions for $X$ if 
+    \begin{equation}
+        \mathrm{cod}[F] \subseteq \mathrm{cod}[F_m],\label{eq:feedbackRequirement}
+    \end{equation}
+    where $\cod[f]$ denotes the codomain of $f(x)$, the minimal set of output values of $f(x)$. For example, if $F_m(x|X)= a(x-X)^2$ for some $a>0$ and $F(x)=-k'x$, $F_m(x|X)=F(x)$ has no solutions for $x>0$, since $\cod[F]=\mathbb R$ and $\cod[F_m]=\mathbb R_{\geq 0}$. 
+    \item $\alpha\ll 1$ is a constraint on the second derivative of the potential $U(x)$. If we express $U(x)$ in the general form $k(x)x^2/2$ for $k(x)=2U(x)/x^2$ an arbitrary function that we can always construct for $x\neq 0$, we know the feedback will only work if $\alpha = k(x)\Delta t/\gamma \ll 1$. If we assume $\partial_x k$ and $\partial_x^2k$ are small compared to $\partial_x^2U(x)$, then $\alpha_{\max}=k_{\max}\Delta t/\gamma$, where $k_{\max} \approx \max_{x\in\mathbb R}[\abs{\partial_x^2U(x)}]$ is the worst curvature of the potential. Thus, if the maximum curvature of the potential is too high, the condition $\alpha\ll 1$ cannot be satisfied and the virtual potential will not be a good approximation of the true potential.
+\end{itemize}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\textheight]{{./Figures/chapter3/feedbackCart/feedbackCart.pdf}}
+%     \caption[The overdamped feedback cart]{\textit{The overdamped feedback cart.}}\label{fig:feedbackCart}
+% \end{figure}
+% The carefull designed potentials in Ch. 2 are made possible using feedback. To understand how this is possible, suppose we have a system that allows one to impose a fixed force $F_m(x|X)$, but we can control the value of $X$. If we wanted to use this system to impose any arbitrary force $F(x)$, we must choose $X$ such that $F_m(x|X)=F(x)$. Based on measurements of $x(t)$, $X(x)$ is chosen so that $F_m(x|X(x))=F(x)$, where $F(x)$ is some arbitrary `target' force. 
 
-The discussion thus far used a spring-mass system to illustrate the principles of feedback, but any fixed force function $F_m(x|X)$ may be used with the same principle, setting $F_m(x|X)=F(x)$ and solving for $X(x)$. However, there is an important constraint:
-\begin{equation}
-    \mathrm{cod}[F] \subseteq \mathrm{cod}[F_m],\label{eq:feedbackRequirement}
-\end{equation}
-where $\mathrm{cod}$ denotes the codomain, the minimal set of all possible output values of a function. This condition is necessary because otherwise the system may not be able to access certain forces. For example, if $F_m(x|X) = k'(x-X)^2$ (with $\mathrm{cod}[F_m]=\mathbb R^+$), there would be no way to generate a negative force, and $F_m$ cannot be used to generate, for example, a cubic force (with $\mathrm{cod}[F]=\mathbb R$). 
+% A toy example is an overdamped cart connected to a movable wall, as shown in fig.~\ref{fig:feedbackCart}. The force the spring imposes on the cart is given by Hooke's law,
+% \begin{equation}
+%     F_m(x|X(x)) = -k(x-X(x)) =F(x)\label{eq:feedbackEquation},
+% \end{equation}
+% and we can thus solve for the `protocol' $X(x)=x+F(x)/k$. However, this simple expression assumes we can instantaneously change $X$ with $x$. In practice, there is always a slight delay $\Delta t$ between the measurement of $x(t)$ and the movement of $X$ to the new target position $X(x(t))$. We can account for the constraint by reexpressing the feedback equation Eq.~\ref{eq:feedbackEquation} as
+% \begin{equation}
+%     F_m(x(t)|X(x(t-\Delta t)))=-k(x(t)-X(x(t-\Delta t))) = F(x(t)).
+% \end{equation}
+% We assume the cart is overdamped and moves on a track with friction coefficient $\gamma$, so that Newton's law, sans inertia term, reads
+% \begin{align}
+%     \gamma\dot x &= -k(x(t)-X(x))-k\dv{X}{t}\Delta t\\
+%     &= -k(x(t)-X(x))-k\dot x\pdv{X}{x}\Delta t\\
+% \end{align}
+% Thus, $X(x(t)) =-(\gamma/k)\dot x -x(t) -\dot x\partial_x X$. If we could move $X$ with $x$ instantaneously, we could make the feedback force $F_f(x;X)=-k(x-X(x))$ indistinguishable from a true force. However, in practice there is always a small time $\Delta t$ between the measuring $x$ and moving the wall to $X(x)$. Thus, the modified expression is $X(x(t+\Delta t))=-(\gamma/k)\dot x -x(t) -\dot x\partial_x X$. Taylor-expanding $X(x(t+\Delta t))$, we obtain
+% \begin{equation}
+%     X(x(t))+\dot x(t)\partial_x{X}\Delta t
+% \end{equation}
+% % \begin{align*}
+% %     X(x(t))+\pdv{X}{x}\dot x\Delta t = -\frac \gamma k\dot x -x(t) -\dot x\partial_x X\\
+% %     k
+% % \end{align*}
+% % where $k$ is the spring stiffness. To generate an arbitrary force, for example a cubic $F(x) = -ax^3-bx$, the position $x$ is measured and used to adjust the position of the wall $X$, by solving the equation $F_m(x|X)=F(x)$ for $X$:
+% % \begin{align}
+% %     -k(x-X) &= -ax^3-bx\\
+% %     X(x) &= x - \frac ak x^3 - \frac bk x.
+% % \end{align}
+% % If $X$ is moved instantaneously with $x$, there would be no difference between this feedback system and an actual cubic force. However, there is in practice always some delay $\Delta t$ between the measurement of $x$ and the movement of the wall to $X(x)$. Thus, the force the object experiences at time $t$ is given by
+% % \begin{equation}
+% %     F_m(x|X) = -k[x(t)-X(x(t-\Delta t))].
+% % \end{equation}
+% % This is called a \textit{virtual force}. As $\Delta t\rightarrow 0$, the virtual force approaches the exact force $F(x)$. Otherwise, the virtual force will differ from the true force by 
+% % \begin{align}
+% %     F_m(x|X)-F(x) &= -k[x(t)-X(x(t-\Delta t))] + k(x(t)-X(x(t)))\\
+% %     &= -k[X(x(t))-X(x(t-\Delta t))].
+% % \end{align}
+% % If we may assume that $x(t)$ and $X(x)$ are both smooth, we use the chain rule to expand the composition:
+% % \begin{align}
+% %     X(x(t-\Delta t)) &= X(x(t)) - \left[ \dv{X}{t} \right]_t\Delta t+\order{\Delta t^2}\\
+% %     &= X(x(t))-\dot x(t)\Delta t\left[ \dv{X}{x} \right]_{x(t)} + \order{\Delta t^2}.
+% % \end{align}
+% % Thus, neglecting superlinear terms, the difference between forces is given by
+% % \begin{align}
+% %     F_m(x|X)-F(x) &\approx -k\dot x(t)\Delta t\left[ \dv{X}{x} \right]_{x(t)}.
+% % \end{align}
+% % For the cubic force example we considered, 
+% % \begin{equation}
+% %     \left[ \dv{X}{x} \right]_{x(t)} = 1-\frac bk - \frac{3a}k x^2(t).
+% % \end{equation}
+% % Thus,
+% % \begin{align}
+% %     F_m(x|X)-F(x) &= -k\dot x(t)\left[ 1-\frac bk - \frac{3a}k x^2(t) \right]\Delta t.
+% % \end{align}
+% % This difference goes to zero as $\Delta t\rightarrow 0$, but the $x^2$ dependence may cause the difference to be very large for large $x$. 
 
-The general experimental setup for a feedback trap thus requires four features:
-\begin{enumerate}
-    \item A system to generate a force (the spring in the toy example);
-    \item A system to measure the position of the trapped object (the eye with which the position of the cart is observed);
-    \item A system to calculate how much force is required for a given position, within a sufficiently fast time $\Delta t$ (the brain of the human observing the cart); and
-    \item A system to move the centre to a new position within $\Delta t$ (the hand of the human moving the wall).
-\end{enumerate}
+% % Assuming that the cart moves on a track with friction coefficient $\gamma$, Newton's second law reads
+% % \begin{equation}
+% %     m\ddot x = -\gamma\dot x + F_m(x|X) = -\gamma\dot x+F(x)-k\dot x(t)\left[ \dv{X}{x}\right]_{x(t)}\Delta t.
+% % \end{equation}
+% % From the simple harmonic oscillator, a damping coefficient
+% % \begin{equation}
+% %     \zeta = \frac{\gamma}{2\sqrt{mk}} = \frac{\gamma/m}{2\sqrt{k/m}}
+% % \end{equation} 
+% % is often defined. If $\zeta \gg 1$, the system is \textit{overdamped}: the inertia term $m\ddot x$ may be neglected. Removing the inertia and dividing throughout by $\gamma$, 
+% % \begin{equation}
+% %     \dot x = \frac{F(x)}{\gamma} + \underbrace{\frac{k}{\gamma}\Delta t\left[ \dv{X}{x} \right]_{x(t)}\dot x}_{\text{Correction term}}\label{eq:feedbackODE}
+% % \end{equation}
+% % The quantity $\gamma/k$ has dimensions of time and characterises the ratio of the friction to the spring stiffness. We call this quantity the \textit{relaxation time},
+% % \begin{equation}
+% %     t_r = \frac{\gamma}{k},
+% % \end{equation}
+% % and notice that the correction term vanishes if $\Delta t/t_r \ll 1$, reducing Eq.~\ref{eq:feedbackODE} to a simple first-order ODE representing asymptotic convergence. Thus, $\Delta t \ll t_r$ is the condition required for a virtual potential to be approximately equal to a true potential. 
 
-The approach outlined here is highly oversimplified. It assumes that measurements are made continuously --- in practice, the delay time $\Delta t$ affects measurement, not just force application --- and ignores the effects of noise on the system. For a more comprehensive discussion, including a discussion of how the nonlinearities associated with discrete measurements lead to instabilities, see Jun and Bechhoefer~\cite{Jun2012}. However, the approach here does outline the essential fact that for a feedback potential to function equivalently to a true potential, we must have $\Delta t \ll t_r$, which remains true in all subsequent analysis. 
+% The discussion thus far used a spring-mass system to illustrate the principles of feedback, but any fixed force function $F_m(x|X)$ may be used with the same principle, setting $F_m(x|X)=F(x)$ and solving for $X(x)$. However, there is an important constraint:
+% \begin{equation}
+%     \mathrm{cod}[F] \subseteq \mathrm{cod}[F_m],\label{eq:feedbackRequirement}
+% \end{equation}
+% where $\mathrm{cod}$ denotes the codomain, the minimal set of all possible output values of a function. This condition is necessary because otherwise the system may not be able to access certain forces. For example, if $F_m(x|X) = k'(x-X)^2$ (with $\mathrm{cod}[F_m]=\mathbb R^+$), there would be no way to generate a negative force, and $F_m$ cannot be used to generate, for example, a cubic force (with $\mathrm{cod}[F]=\mathbb R$). 
+
+% The general experimental setup for a feedback trap thus requires four features:
+% \begin{enumerate}
+%     \item A system to generate a force (the spring in the toy example);
+%     \item A system to measure the position of the trapped object (the eye with which the position of the cart is observed);
+%     \item A system to calculate how much force is required for a given position, within a sufficiently fast time $\Delta t$ (the brain of the human observing the cart); and
+%     \item A system to move the centre to a new position within $\Delta t$ (the hand of the human moving the wall).
+% \end{enumerate}
+
+% The approach outlined here is highly oversimplified. It assumes that measurements are made continuously --- in practice, the delay time $\Delta t$ affects measurement, not just force application --- and ignores the effects of noise on the system. For a more comprehensive discussion, including a discussion of how the nonlinearities associated with discrete measurements lead to instabilities, see Jun and Bechhoefer~\cite{Jun2012}. However, the approach here does outline the essential fact that for a feedback potential to function equivalently to a true potential, we must have $\Delta t \ll t_r$, which remains true in all subsequent analysis. 
 
 \section{Optical feedback traps}
 \begin{figure}
@@ -873,25 +893,25 @@ Since the particle follows an Ornstein-Uhlenbeck process, the Power Spectral Den
 \end{equation}
 where $\hat x$ denotes the Fourier transform of $x$, and the index $n$ implies that the discrete Fourier transform is used, evaluated at $f_n=n/N\Delta t$ for sampling time $\Delta t=$ \qty{10}{\micro\second} and $N$ being the total number of data (since the fast Fourier transform returns as many $\hat x_n$ as there are $x_n$). For an Ornstein-Uhlenbeck process for a particle in a trap with stiffness $k$, friction coefficient $\gamma$, and diffusivity $D$, the PSD is given by a Lorentzian~\cite{BergSoerensen2004}:
 \begin{equation}
-    S(f) = \frac 1{2\pi^2}\frac{D}{f_c^2+f^2},
+    S(f) = \frac 1{2\pi^2}\frac{D}{f_c^2+f^2} + S_m,
 \end{equation}
 where the corner frequency $f_c = k(2\pi\gamma)$
-using the fluctuation-dissipation relation~\ref{eq:fluctuationDissipation}. However, since there is a finite sampling frequencing, the Nyquist-Shannon sampling theorem applies and thus the signal is aliased at or above $f_s/2 = 1/(2\Delta t) = $\qty{50}{\kilo\hertz}. The formula must therefore be modified to account for aliasing. Berg-S\o renson and Flyvbjerg showed that the modified formula was~\cite{BergSoerensen2004}
+using the fluctuation-dissipation relation~\ref{eq:fluctuationDissipation} and $S_m$ is the measurement noise power spectrum. However, since there is a finite sampling frequencing, the Nyquist-Shannon sampling theorem applies and thus the signal is aliased at or above $f_s/2 = 1/(2\Delta t) = $\qty{50}{\kilo\hertz}. The formula must therefore be modified to account for aliasing. Berg-S\o renson and Flyvbjerg showed that the modified formula was~\cite{BergSoerensen2004}
 \begin{equation}
     S_n = \frac 1{2\pi}\frac{(1-c^2)D\Delta t}{1+c^2 +2c\cos(2\pi n/N)},~\label{eq:aliasedLorentzian}
 \end{equation}
 with $N$ the number of samples, and $c=e^{-2\pi f_c/f_s}$. 
 
-The power spectral density is calculated from the discrete position data using \textit{Bartlett's method}: the data (consisting of $N$ position measurements) are divided into $n=$\num{20} nonoverlapping segments, each of size $\lfloor N/n\rfloor$~\cite{Press2007}. 
+The power spectral density is calculated from the discrete position data using \textit{Bartlett's method}: the data (consisting of $N$ position measurements) are divided into $n=20$ nonoverlapping segments, each of size $\lfloor N/n\rfloor$~\cite{Press2007}. 
 
 We then fit the PSD to Eq.~\ref{eq:aliasedLorentzian}. The parameters we obtain are multiplied by a factor of $n/(n-2)$ in order to correct for the bias linked to the number of degrees of freedom~\cite{BergSoerensen2004}.
 
 The three sets of parameters we obtain should ideally agree to within about \qty{5}{\percent} relative error. The aliased Lorentzian is the most accurate way of estimating the trap constant, and we therefore use the estimates we get from fitting the aliased Lorentzian as parameters in the software. If the aliased Lorentzian differs greatly from the fit over the range of \qtyrange{0.6}{20}{\hertz}, $1/f$ noise is significant and so the parameters obtained from any of the methods outlined here are unreliable and cannot be used. The cause of such a discrepancy may be
-\marginnote{\small{I don't think my simulations can handle Ornstein Uhlenbeck processes without a lot of work --- the noise is pregenerated for efficiency and thus delta-correlated.}}
+\marginnote{\tiny Should I repeat Fig. 3.4 with simulation data?}
 \begin{enumerate}
     \item \textit{Sample contamination}: If the bead sample is contaminated with \textit{E. coli}, individual bacteria may get caught in the trap. The individual bacteria are visible as small rodlike objects floating around the bead. In this case, a new bead sample must be prepared.
     \item \textit{Improper sealing}: If the sample cell is not completely sealed, evaporation will cause drifts that manifest as $1/f$ noise. In this case, a new sample cell must be prepared.
-    \item \textit{Multiple trapped beads}: If multiple beads are trapped at once, the interaction of the beads will cause low-frequency noise, visible as a large `bump' in the PSD at $f<$\qty{5}{\hertz}. In this case, the best strategy is to briefly block the trapping laser, retrap a single bead, and repeat the calibration steps outlined earlier. The bead sample should be diluted so that the probability of two beads being in the field of view of the camera at once should be low for the entire duration of the experiment.
+    \item \textit{Multiple trapped beads}: If multiple beads are trapped at once, the interaction of the beads will cause low-frequency noise, visible as a large `bump' in the PSD at $f<$ \qty{5}{\hertz}. In this case, the best strategy is to briefly block the trapping laser, retrap a single bead, and repeat the calibration steps outlined earlier. The bead sample should be diluted so that the probability of two beads being in the field of view of the camera at once should be low for the entire duration of the experiment.
 \end{enumerate}
 Additionally, there may be spikes in the PSD at \qty{60}{\hertz} with small peaks at higher multiples. These spikes are electrical noise from the mains frequency that the QPD can pick up through mutual inductance and optical pickup from the lights. To mitigate electrical noise, the lights in the room are turned off and the setup is covered for the duration of the experiment\footnote{Covering the experiment is also useful for safety reasons as it creates a secondary barrier between the experimentalist's eyes and the \qty{500}{\milli\watt} trapping laser.}. Furthermore, if optical components need to be realigned, we must wait for at least several hours (or better yet, over a day) for transient low-frequency creep from the components' springs to completely die down. Airflow in the room from an air conditioner may also be a source of noise as it may vibrate the sample cell very slightly. Finally, acoustic pickup from sources close to the experiment can create another spike at around \qty{160}{\hertz} in the PSD.
 
@@ -979,18 +999,18 @@ In this chapter, we outline theoretical and experimental results from experiment
 \section{Using artificial noise to achieve high effective temperatures}
 \begin{figure}
     \begin{tikzpicture}
-        \node (a) at (0,0){\includegraphics[width=0.4\textwidth]{{./Figures/chapter4/flattenedPDFs/clipping_vs_T.pdf}}};
-        \node[above left=0cm of a]{(a)};
-        \node (b)[right=1cm of a]{\includegraphics[width=0.4\textwidth]{{./Figures/chapter4/flattenedPDFs/clipping_pdfs.pdf}}};
-        \node[above left=0cm of b]{(b)};
+        \node (a) at (0,0){\includegraphics[width=0.2\textheight]{{./Figures/chapter4/flattenedPDFs/clipping_vs_T.pdf}}};
+        \node[above left=-0.7cm of a]{(a)};
+        \node (b)[right=0.2cm of a]{\includegraphics[width=0.2\textheight]{{./Figures/chapter4/flattenedPDFs/clipping_harmonic.pdf}}};
+        \node[above left=-0.7cm of b]{(b)};
+        \node (c)[right=0.2cm of b]{\includegraphics[width=0.2\textheight]{{./Figures/chapter4/flattenedPDFs/clipping_doubleWell.pdf}}};
+        \node[above left=-0.7cm of c]{(c)};
     \end{tikzpicture}
-    \caption{\small{(a) The maximum force constraints cause the PDFs to be distorted from their true values. We perform a Langevin simulation with \num{5000} particles of a system in a harmonic potential of trap strength $k=10$, with bath temperature $T_h$, starting out in the state $\pi(x;T_h)$, with `natural' Brownian noise of amplitude $\sqrt{\gamma\kB T_c}$ and `artificial' noise force of amplitude $\sqrt{\gamma\kB (T_h-T_c)}$. If clipping does not affect the PDF, it will not evolve at all. The $\mathcal L_1$ distances between the clipped PDF and true PDF is plotted here. (b) The distorted PDF for $T_h=80T_c$. The standard deviation clearly is much lower for the clipped PDF than the unclipped PDF.}}
+    \caption{\small{(a) The maximum force constraints cause the PDFs to be distorted from their true values. We perform a Langevin simulation with \num{5000} particles of a system in a harmonic potential of trap strength $k=10$, with bath temperature $T_h$, starting out in the state $\pi(x;T_h)$, with `natural' Brownian noise of amplitude $\sqrt{\gamma\kB T_c}$ and `artificial' noise force of amplitude $\sqrt{\gamma\kB (T_h-T_c)}$. If clipping does not affect the PDF, it will not evolve at all. The $\mathcal L_1$ distances between the clipped PDF and true PDF is plotted here. (b) The distorted PDF for $T_h=80T_c$. The standard deviation clearly is much lower for the clipped PDF than the unclipped PDF.}}\label{fig:clipping}
 \end{figure}
 The technique outlined in chapter 3 for choosing a high effective initial temperature by manually positioning a particle and then `releasing' it is subject to errors arising from measurement noise and the tolerance we set the initial position to be between. In this section, we outline theoretical and experimental methods to raise the particle's diffusivity by adding artificially generated noise to the force at each timestep. We may use this technique to both ensure the initial distribution has the desired temperature and also to implement finite quenches. We impose the double-well force $F(x)$, but also add a noise force $\eta$ to the force, whose standard deviation scales with $\sqrt{\kB (T(t)-T_c)}$ for desired temperature $T(t)=T_ch(t)$ at time $t$. In experiments, the net effect of this is to replace the positioning step with 
 
-The effect these `noise temperatures' imposed by programmatically generated noise forces have on the Langevin dynamics of a particle is explored in a recent preprint by Basak et al.~\cite{Basak2026}; indeed, we may also use these precise dynamics to vary the diffusivity with time over the course of the protocol. This method of choosing an initial position is much more natural, much less memory-intensive, and much less cumbersome than the previous methods outlined here. However, there is an important limitation: as outlined previously, the feedback force is limited to $[-F_{\max}, F_{\max}]$. Consequently, if $\abs{F(x)+\eta(t)} \geq F_{\max}$, the noise force must be clipped. In practice this will not matter if $T_0$ is sufficiently small. To demonstrate this, we consider the probability that $\abs{F(x)+\eta(t)} \geq F_{\max}$. Calculating this probability analytically is challenging as $F_{\max}$ is not injective and has regions where its value is constant. Instead, we use Monte Carlo techniques to estimate the clip fraction: we sample $x_i\sim\pi(x;T_h)$ calculate $F(x_i)$, add a force $\eta_i\sim\mathcal N[0,\sqrt{\gamma\kB (T_h-T_c)}]$, and compute the proportion of forces that fall outside the domain $[-F_{\max}, F_{\max}]$. This proportion is called the \textit{clip fraction}. We see from Fig.~[figure] that this proportion goes up. The effect of clipping is to compress the PDFs down slightly, as in the figure. We measure the effect on our experiment by computing the $\mathcal L_1$ distance between the steady state distribution from running a Langevin simulation with a quasistatic quench~\ref{eq:quasistaticQuench} at different temperatures $T_h$ with and without clipping. This is plotted in Fig.~[figure](c). We notice that the deviation is quite significant at the larger values of $T_h$. Thus, we look .
-
-
+The effect these `noise temperatures' imposed by programmatically generated noise forces have on the Langevin dynamics of a particle is explored in a recent preprint by Basak et al.~\cite{Basak2026}; indeed, we may also use these precise dynamics to vary the diffusivity with time over the course of the protocol. This method of choosing an initial position is much more natural, much less memory-intensive, and much less cumbersome than the previous methods outlined here. However, there is an important limitation: as outlined previously, the feedback force is limited to $[-F_{\max}, F_{\max}]$. Consequently, if $\abs{F(x)+\eta(t)} \geq F_{\max}$, the noise force must be clipped. In practice this will not matter if $T_0$ is sufficiently small. To demonstrate this, we consider the probability that $\abs{F(x)+\eta(t)} \geq F_{\max}$. Calculating this probability analytically is challenging as $F_{\max}$ is not injective and has regions where its value is constant. Instead, we use Monte Carlo techniques to estimate the clip fraction: we sample $x_i\sim\pi(x;T_h)$ calculate $F(x_i)$, add a force $\eta_i\sim\mathcal N[0,\sqrt{\gamma\kB (T_h-T_c)}]$, and compute the proportion of forces that fall outside the domain $[-F_{\max}, F_{\max}]$. This proportion is called the \textit{clip fraction}. We see from Fig.~\ref{fig:clipping} that this proportion goes up. The effect of clipping is to compress the PDFs down slightly, as in the figure. We measure the effect on our experiment by computing the $\mathcal L_1$ distance between the steady state distribution from running a Langevin simulation with a quasistatic quench~\ref{eq:quasistaticQuench} at different temperatures $T_h$ with and without clipping. This is plotted in Fig.~\ref{fig:clipping}(c). We notice that the deviation is quite significant at the larger values of $T_0$. Thus, we look for potentials that display a Mpemba effect at low $T_h$ to minimise the effects of clipping.
 
 % We must first calculate the force probability distribution (i.e. the probability that a particle living in a potential $U(x)$ at temperature $T_c$ experiences a force $F_0$):
 % \begin{equation}
@@ -1024,7 +1044,7 @@ The effect these `noise temperatures' imposed by programmatically generated nois
 
 % Finally, we numerically calculate the probability mass not within the domain $[-F_{\max}, F_{\max}]$, which turns out to be about $p=0.062$ for $T_h=22T_c$. We then run Langevin simulations with a `clipped' force where the noise temperature of $\eta$ is unchanged over the course of the protocol, where we constrain $F(x)+\eta(t)$ to lie between $[-F_{\max},F_{\max}]$ reveals that the $\mathcal L_1$ distance is somewhat significantly different for $T_h>10T_c$ between the true Boltzmann distribution at $T_h$ and the steady state distribution of the system with clipped noise forces.
 
-\section{Requirements for a boxless potential}
+\section{Requirements for a box-free potential}
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{{./Figures/chapter2/asymmetricDoubleWellPotential/asymmetricForcePotential.pdf}}
@@ -1113,36 +1133,63 @@ The potential we thus choose is defined as follows:
 \end{align}
 As before, we choose $x_r$ and $x_l$ to satisfy $U_0'(x_r)=-fF_{\max}$ and $U_0'(x_l)=F_{\max}$. We find that $\Delta E=0.6\kB T_c$, and $f=0.3$ more or less optimise the conditions we outlined earlier, with $T_h\approx 12T_c$ and $T_w\approx 3T_c$ for a strong Mpemba effect and visible with about \num{5000} trials. All other parameters are identical to those of Eq.~\ref{eq:asymmetricDoubleWellPotential}. We plot the modified potential and the $a_2$ values in Fig.~\ref{fig:asymmetricForcePotential}. 
 
-% Add plot of a_2s for this potential.
-
 % Central results section: separate section after "requirements for a boxless potential": 1) Solve FPE, 2) simulations of Langevin, 3) data with first passage initial condition ("Avinashian"), 4) data with noise-based IC ("Srushtian")
 
-\section{The boxless potential displays the Mpemba effect}
+\section{The box-free potential displays the Mpemba effect}
+\begin{figure}
+    \begin{tikzpicture}
+        \node (a) at (0,0){\includegraphics[width=0.45\textwidth]{{./Figures/chapter4/boxfreePotential/boxFreeFPE.PDF}}};
+        \node[above left=0cm of a]{(a)};
+        \node[right=1cm of a](b){\includegraphics[width=0.45\textwidth]{{./Figures/chapter4/boxfreePotential/boxFreeData.PDF}}};
+        \node[above left=0cm of b]{(b)};
+    \end{tikzpicture}
+    \caption[The box-free potential displays the Mpemba effect]{\small{(a) Simulations of the experiment with $N=5000$ Langevin integrations. The crossing is visible well above the noise floor. The solutions to the FPE are overlaid in dashed lines. (b) Experimental data with the same parameters as the simulation. We see that the crossing does exist, although the cold distribution, which one would normally expect to be flat throughout the protocol, does in fact show some definite relaxation. Thus, the initial condition is not properly imposed. Fokker-Planck solutions for the same initial condition are overlaid: we see that the dynamics of the system do agree well with the FPE until the noise floor, suggesting that the main challenge is in correctly imposing the initial condition.}}\label{fig:boxFreePotential}
+\end{figure}
 For the potential Eq.~\ref{eq:asymmetricSlopesDoubleWellPotential}, $T_h=12T_c$, which is low enough that force clipping does not significantly affect the results: simulations show no significant distortions in the clipped and unclipped data. The probability mass outside a fairly small box $\mathcal B'=[-3,5]$~\unit{\pixel} from Eq.~\ref{eq:probabilityCondition} is about $0.9996$, which is high enough that no particles will likely leave the box even in a fairly slow finite quench. We confirm the low escape probability with simulations as well. Solutions to the FPE confirm that have successfully eliminated the $\lambda_2$ term. 
 We plot the $a_2$ coefficient in Fig.[figure], noting that the potential not only displays the strong Mpemba effect with a fairly low maximum but also crosses the $T$ axis more than once, suggesting that there are multiple temperatures that would allow for exponentially faster cooling. This phenomenon, called a \textit{double Mpemba effect} was first documented via simulations in a system much like ours by Malhotra and L\"owen in 2024~\cite{Malhotra2024}. 
 
 On solving the Fokker-Planck equation, we see the signature of the strong Mpemba effect: the curve for the warm temperature has a secondary `bump' that arises from the dominant $\lambda_2$ term, whereas the hot curve decreases much more rapidly\footnote{Actually, the solution to the FPE reveals that the $\lambda_2$ term \textit{does} eventually dominate the behaviour, since $a_2(T_h^*)= \epsilon_{a_2}$ where $\epsilon_{a_2}\approx 0$ is set by the solver to . However, the distance level at which the $\lambda_2$ term starts to become relevant is so small that it is far below the noise floor for any realistic number of Langevin integrations and even close to the zone where errors from the finite mesh size start to dominate the distance curves for the FPE solver. Thus, more precisely, our experiment would be \textit{indistinguishable from a strong Mpemba effect in any experiment} if we choose the stated value of $T_h$.}.
 
-We confirm this with Langevin simulations. We find that about \num{5000} integrations are necessary for the effect to be unambiguous, few enough that an experiment is possible with this potential.
+We confirm this with Langevin simulations. We find that about \num{5000} integrations are necessary for the effect to be unambiguous, few enough that an experiment is possible with this potential. We see a fairly clear crossing between the distance curves.
+
+Finally, we use the first-passage positioning approach to collect data with this potential. While we do see a crossing, the curve corresponding to the cold data slightly drops with time. The effect is less pronounced if we take the distance with respect to the true Boltzmann distribution instead of the inferred final distribution. Thus, the results are not fully trustworthy. However, when we use the empirical PDF as an initial condition for the Fokker-Planck solver, we see that the results do match up with the theoretical results. Thus, the potential we use does show the Mpemba effect.
+\marginnote{\small{The data that uses noise to impose the initial condition contains an artefact where the distance curves go up, and although it matches up reasonably well with the FPE dynamics initially, they do not predict the bump or even a crossing for that matter, suggesting huge distortions in the initial conditions. Consequently I don't think it makes sense to include it.}}
 
 \section{Finite-rate quenches: simulations}
+\begin{figure}
+    \begin{tikzpicture}
+        \node at (0,0) (a) {\includegraphics[width=0.3\textwidth]{{./Figures/chapter4/finiteQuench/slow.PDF}}};
+        \node[above left=-0cm and -1cm of a]{(a)};
+        \node[right=0cm of a](b) {\includegraphics[width=0.3\textwidth]{{./Figures/chapter4/finiteQuench/crit.PDF}}};
+        \node[above left=-0cm and -1cm of b]{(b)};
+        \node[right=0cm of b](c) {\includegraphics[width=0.3\textwidth]{{./Figures/chapter4/finiteQuench/fast.PDF}}};
+        \node[above left=-0cm and -1cm of c]{(c)};
+    \end{tikzpicture}
+    \caption[The existence of a critical quench rate]{\small{(a) for a slow quench, Langevin simulations indicate that the Mpemba effect no longer exists. Solutions to the FPE are overlaid in dashed lines. (b) At a certain critical quench rate $\lambda_2<\Lambda^*<\lambda_3$, the two distance curves reach the noise floor almost at the same time. (c) Beyond the critical quench rate, we continue to see the Mpemba effect.}}
+\end{figure}
 We now use Langevin simulations to see the effects of a finite-rate quench. The natural values of $\Lambda$ one may start with are multiples of the eigenvalues of the instantaneously quenched Fokker-Planck operators, $\lambda_k$. We find that $\Lambda=\lambda_2$ consistently displays no Mpemba effect. For $\Lambda=\lambda_3$, the hot and warm systems seem to approach the noise floor at roughly the same time. $\Lambda=\lambda_4$ and higher always display a Mpemba effect. This result matches our expectation, as $\lambda_2$ is related to the Kramers rate, which should not affect the fast dynamics of the particle, but $\lambda_3$ is the rate-determining mode in the fast dynamics of the particle. Thus, we hypothesise $\Lambda^*\approx \lambda_3$. However, this result is only qualitative, and possibly depends on the choice of parameters we used for the potential.
 
-\section{On the analyticity of potentials}
+On solving the Fokker-Planck equation we see that the crossing is actually between $\lambda_3$ and $\lambda_2$. A value of $\Lambda=\lambda_3$ produces an effect that looks like a critical quench rate in simulations. 
+
+Unfortunately, we could not complete experiments to completely demonstrate the strong Mpemba effect in the system. However, the simulations and theoretical curves\footnote{We generate the theoretical overlay curves by first taking the empirical PDF at $t=0$ for each starting condition, performing a cubic interpolation to increase the mesh size (to ensure the solver converges but maintaining $\mathcal C^2$ continuity), and then using the Grima-Newman method we described earlier~\cite{Grima2004} to propagate the solution out. We do this instead of overlaying the theoretical results to account for potential errors in positioning. Thus, these theoretical curves are not a direct comparison to the theoretical curves we compared the simulations with, but rather a confirmation that the dynamics of the system do indeed obey the Fokker-Planck equation.} we have shown here consistently match the experiments so closely that we think the results fairly convincing nonetheless.
+
+More analysis is needed to find whether the critical quench rate continues to show the same behaviour in double-welled potentials\footnote{Each of the exponents are considerably smaller in the one-dimensional triple well, for example, because there are multiple slow modes of cooling involving hopping between different pairs of wells. Thus, intuition about $\lambda_3$ being the dominant rate in the fast step likely does not apply well to the system.}. However, the potential criticality of $\lambda_2>\Lambda^*>\lambda_3$ implied by the results here hold well for different choices of parameters that produce strong Mpemba effects, suggesting a certain generality.
+
+\section{Is the 1D Mpemba effect an artefact of non-analyticity?}
 \begin{figure}
     \centering
     % \includegraphics[width=0.5\textheight, page=8]{{Figures/tempfigures.pdf}}
     \begin{tikzpicture}
-        \node (a) at (0,0) {\includegraphics[width=0.4\textwidth]{{./Figures/chapter2/analyticApproximation/analyticPotential.pdf}}};
+        \node (a) at (0,0) {\includegraphics[height=0.25\textheight]{{./Figures/chapter2/analyticApproximation/analyticPotential.pdf}}};
         \node[above left=0cm of a]{(a)};
-        \node[right=0cm of a] (b){\includegraphics[width=0.4\textwidth]{{./Figures/chapter2/analyticApproximation/analytica2S.pdf}}};
+        \node[right=0cm of a] (b){\includegraphics[height=0.25\textheight]{{./Figures/chapter2/analyticApproximation/analytica2S.pdf}}};
         \node[above left=0cm of b]{(b)};
-        \node[below=0cm of a] (c){\includegraphics[width=0.4\textwidth]{{./Figures/chapter2/analyticApproximation/analyticForce.pdf}}};
+        \node[below=0cm of a] (c){\includegraphics[height=0.25\textheight]{{./Figures/chapter2/analyticApproximation/analyticForce.pdf}}};
         \node[above left=0cm of c]{(c)};
-        \node[right=0cm of c] (d){\includegraphics[width=0.4\textwidth]{{./Figures/chapter2/analyticApproximation/analyticL1.pdf}}};
+        \node[right=0cm of c] (d){\includegraphics[height=0.25\textheight]{{./Figures/chapter2/analyticApproximation/analyticL1.pdf}}};
         \node[above left=0cm of d]{(d)};
     \end{tikzpicture}
-    \caption[Analytic approximation to potential]{\small{(a) Analytic approximations to the potential Eq.~\ref{eq:asymmetricSlopesDoubleWellPotential} and (c) force. (b) The $a_2$ coefficients of the analytic approximations to the potential (red) have nonmonotonic behaviour in $T$ that mirrors the behaviour of the piecewise potential (dashed blue) that we use. Thus, we see the Mpemba effect if we use these approximate analytic potentials in a Langevin simulation (d).}}\label{fig:analyticPotentials}
+    \caption[Analytic approximation to potential]{\small{(a) Analytic approximations to the potential Eq.~\ref{eq:asymmetricSlopesDoubleWellPotential} with $\Delta E=0.3\kB T$, $f=0.5$. (c) The force profile, $F(x)=-U'(x)$. (b) The $a_2$ coefficients of the analytic approximations to the potential (red) have nonmonotonic behaviour in $T$ that mirrors the behaviour of the piecewise potential (dashed blue) that we use. (d) Thus, we see the Mpemba effect if we use these approximate analytic potentials in a Langevin simulation.}}\label{fig:analyticPotentials}
 \end{figure}
 The piecewise nature of the potentials used here may be of some concern. Although we have shown here that infinite walls are not necessary for the existence of the Mpemba effect, our potential is nonanalytic because it has two points, $x_l$ and $x_r$, where the potential is not twice-differentiable. Such nonanalyticities may be present in effective potentials of coarse-grained models but not fundamental potentials, which are the sum of analytic terms. One may yet wonder whether a fully analytic potential on $\mathbb R$\footnote{\textit{Analytic} on some open set $\mathcal S$ here means that a function is equal to its infinite Taylor series expansion $\forall\ x\in\mathcal S$.} shows the Mpemba effect or whether the Mpemba effect is an artefact of the piecewise nature of the potential. A recent preprint, Liu et al~\cite{Liu2026} has suggested to this end that the Mpemba effect does not exist in analytic potentials. In this section, we show that the Mpemba effect is more a consequence of the physical shape of the potential, and to this end show that a fully analytic approximation to the potential defined in Eq.~\ref{eq:asymmetricSlopesDoubleWellPotential} yields the Mpemba effect.
 
@@ -1188,7 +1235,7 @@ In this thesis, we have outlined the techniques we can use to achieve finite-rat
 
 \section{Other methods for imposing quenches}
 \subsection{Imposing noise experimentally with a Johnson resistor}
-The noise clipping constraint only applies to our system if noise is programmatically generated and added to the force of the trap. Saha et al.~\cite{Saha2023} used a Johnson resistor with an amplifier to create a noisy electric field across a sample cell, allowing them to achieve effective temperatures as high as $T_h=\order{100T_c}$ since the forces on the particle are no longer constrained by the physical limitations of the trap we outlined earlier. However, passing an electric field through water would cause electrolysis over time, creating bubbles that would create high drifts.
+The noise clipping constraint only applies to our system if noise is programmatically generated and added to the force of the trap. Saha et al.~\cite{Saha2023} used a Johnson resistor with an amplifier to create a noisy electric field across a sample cell, allowing them to achieve effective temperatures as high as $T_h=\order{100T_c}$ since the forces on the particle are no longer constrained by the physical limitations of the trap we outlined earlier. However, passing an electric field through water would electrolyse the water into hydrogen gas over time, creating bubbles that would create high drifts\footnote{Electrolysis can be somewhat mitigated by using deionised water, but only to a certain extent as even pure water has a low electrical conductivity.}.
 
 \subsection{Coordinate transformations}
 Alternatively, we could use a coordinate transformation technique. Weitsman~\cite{Weitsman1976} considered the problem of the diffusion equation with time-varying diffusivity:
@@ -1224,6 +1271,9 @@ The original toy model Lu and Raz used was a particle in a periodic triple-well 
 
 \chapter{Appendices}
 \section{The symmetrisation Mpemba effect}
+\begin{figure}
+    
+\end{figure}
 We considered throughout this thesis a phenomenon wherein an initially hotter system cools faster than a warm system. But in the years since Lu and Raz first published their theory~\cite{Lu2017}, there has been considerable work on the \textit{quantum Mpemba effect}, first proposed by Ares et al.~\cite{Ares2023} in 2023, and demonstrated experimentally in a trapped-ion quantum simulator by Joshi et al.~\cite{Joshi2024} in 2024. In their construction, an isolated system is considered rather than a system coupled to a bath. The Hamiltonian operator that evolves the system obeys a certain symmetry, eg. $\mathcal U(1)$, $\mathcal{SU}(2)$, or --- particularly relevant to the discussion here --- $\mathcal Z_2$\footnote{$\mathcal Z_2$ denotes symmetry under reflection.}. The system is initialised in an asymmetric state, often a pure state. The asymmetry of the system is quantified by some \textit{entanglement asymmetry} $\Delta S$, analogous to the  and the Mpemba effect is said to occur if $\Delta S$ goes to zero faster for an initially `more asymmetric' state. 
 
 Recently, Summer et al.~\cite{Summer2025} proposed that the different Mpemba effects could be united using a tool from quantum information theory, \textit{resource theories}. A detailed discussion of resource theories are beyond the scope of this appendix, but suffice to say for our purposes that they provide a very general definition of the Mpemba effect, and define the Mpemba effect of a system like ours in terms of an \textit{athermality monotone} and a Mpemba effect in quantum systems in terms of an \textit{asymmetry monotone}. 
@@ -1234,14 +1284,15 @@ Moroder and Teza realised that the asymmetry monotone they defined was not uniqu
 \end{equation}
 for some choice of distance function $\mathscr D$. The asymmetry Mpemba effect occurs if, given two initial states $p_0(x,0)$ and $p_1(x,0)$ with $\mathcal D_s[p_0(x,0)] > \mathcal D_s[p_1(x,0)]$, there exists $t^*$ for which $\mathcal D_s[p_0(x,t^*)]<\mathcal D_s[p_1(x,t^*)]$ for all $t\geq t^*$.
 
-To verify that the effect exists in classical systems, we choose a harmonic potential, the approximate potential that an optical trap imposes on a particle\footnote{Moreover, the Fokker-Planck equation has an exact solution for a harmonic potential, as we described earlier, so this potential is analytically convenient.}, and choose length units so that $\kB T/k=1\sigma$. Thus, the equilibrium distribution will be $\pi(x)=\mathcal N[0,1]$. We choose the initial states to be the sum of two off-centre Gaussians:
+To verify that the effect exists in classical systems, we choose a harmonic potential, the approximate potential that an optical trap imposes on a particle\footnote{Moreover, the Fokker-Planck equation has an exact solution for a harmonic potential, as we described in Ch. 2, so this potential is analytically quite convenient.}, and choose the \textit{trap-sigma} as the length unit, where $1\ \sigma = \sqrt{\kB T/k}$. Thus, the equilibrium distribution will be $\pi(x)=\mathcal N[0,1]$. We choose the initial states to be the sum of two off-centre Gaussians:
 \begin{align}
     p_0(x,0) &= a_0\mathcal N[\mu_0,\sigma_0] + a_0'\mathcal N[\mu_0'+\sigma_0']\\
     p_1(x,0) &= a_1\mathcal N[\mu_1,\sigma_1] + a_1'\mathcal N[\mu_1'+\sigma_1'],
 \end{align}
-where $a_i+a_i'=1$. We find that for $\mu_0=0.4\sigma$, $\mu_0'=0.6\sigma$ and $\mu_1=4\sigma$, $\mu_2=-4\sigma$, with $\sigma_0\approx\sigma_0'$ and $\sigma_1\neq \sigma_1'$, the state $p_1$ will obviously take more time to equilibrate, and therefore symmetrise, than state $p_0$ but $p_0$ is still more asymmetric than $p_0$. Moreover, Vucelja and Walker demonstrated that the harmonic potential cannot display a thermal Mpemba effect~\cite{Walker2021}, so the asymmetry Mpemba effect is truly a distinct phenomenon.
+where $a_i+a_i'=1$. We find that for $\mu_0=0.4\sigma$, $\mu_0'=0.6\sigma$ and $\mu_1=4\sigma$, $\mu_2=-4\sigma$, with $\sigma_0\approx\sigma_0'$ and $\sigma_1\neq \sigma_1'$, the state $p_1$ will obviously take more time to equilibrate, and therefore symmetrise, than state $p_0$ but $p_0$ is still more asymmetric than $p_0$. Moreover, Vucelja and Walker demonstrated that the harmonic potential cannot display a thermal Mpemba effect~\cite{Walker2021}, so the asymmetry Mpemba effect is truly a distinct phenomenon from the athermality Mpemba effect.
 
-We performed this experiment by loading the CDFs for $p_0$ and $p_1$ into the optical feedback trap and using Kumar's first-passage technique to choose positions $x_0$, scaled \textit{down} by $\sqrt{k/\kB T_c}$. We then `switch off' feedback and let the particles evolve under the natural force of the trap. Finally, we scale \textit{up} all position measurements by the same factor so that the length units are in trap-sigmas. We very straightforwardly find that the system displays the symmetrisation Mpemba effect, and the results are consistent with the Fokker-Planck equation.
+We performed this experiment by loading the CDFs for $p_0$ and $p_1$ into the optical feedback trap and using Kumar's first-passage technique to choose positions $x_0$, scaled \textit{down} by $\sqrt{k/\kB T_c}$. We then `switch off' feedback and let the particles evolve under the natural force of the trap. Finally, we scale \textit{up} all position measurements by the same factor so that the length units are in trap-sigmas. We find that the system displays the symmetrisation Mpemba effect, and the results are consistent with the Fokker-Planck equation.
+
 \printbibliography
 
 
