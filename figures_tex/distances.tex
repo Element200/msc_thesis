@@ -10,7 +10,7 @@
 
 \begin{document}
 \begin{tikzpicture}
-    \begin{semilogxaxis}[xlabel=$t$, ylabel=$\mathcal L_1$ distance, axis x line=center, axis y line=left, ymax=1.25]
+    \begin{semilogxaxis}[xlabel={\Huge $t$}, ylabel=\Huge{ $\mathcal L_1$} distance, axis x line=center, axis y line=left, ymax=1.25, xmin=1e-5]
         \addplot[thick, red] table[x=t, y=h, col sep=comma]{avinashianDistances_FPE.csv};
         % \addlegendentry{$\mathcal D_c[p_h]$};
         \addplot[thick, blue] table[x=t, y=w, col sep=comma]{avinashianDistances_FPE.csv};

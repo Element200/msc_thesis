@@ -11,12 +11,12 @@
 \begin{tikzpicture}
     \node at (0,0) (rawdata){\includegraphics[width=20cm]{rawdata_downsampled.pdf}};
     \node (pdf)[below=5cm of rawdata]{\hspace{-1.5cm}\includegraphics[width=15cm]{brownian_PDF.pdf}};
-    \draw[->, thick] (rawdata.south) --  node[midway, right, xshift=3cm, yshift=-0.5cm, label={\LARGE{Histogram and normalise}}]{}(pdf.north);
+    \draw[->, thick] (rawdata.south) --  node[midway, right, xshift=4.5cm, yshift=-0.5cm, label={\Huge{Histogram and normalise}}]{}(pdf.north);
     \node (U0)[below=5cm of pdf]{\hspace{-1.5cm}\includegraphics[width=15cm]{inferred_quadratic.pdf}};
-    \draw[->, thick] (pdf.south) --  node[midway, right, xshift=3.8cm, yshift=-0.5cm, label={\LARGE{$U(x)=k_{\mathrm{B}}T_c\ln[p(x)]$}}]{}(U0.north);
+    \draw[->, thick] (pdf.south) --  node[midway, right, xshift=3.8cm, yshift=-0.5cm, label={\Huge{$U(x)=k_{\mathrm{B}}T_c\ln[p(x)]$}}]{}(U0.north);
 
     \node (psd)[below right=5cm and 6cm of rawdata]{\hspace{-1.5cm}\includegraphics[width=15cm]{brownian_PSD.pdf}};
-    \draw[->] (rawdata.south east) -- node[midway, right, label={\Huge{$S_n = \frac 1{2\pi} \frac{(1-c^2)D\Delta t}{1+c^2-2c\cos(2\pi n/N)}$}}, xshift=0.6cm, yshift=0.2cm]{}($(psd.north)+(0,3cm)$) -- (psd.north);
+    \draw[->] (rawdata.south east) -- node[midway, right, label={\Huge{$S_n = \frac 1{2\pi f_c} \frac{(1-c^2)D\Delta t}{1+c^2-2c\cos(2\pi n/N)}$}}, xshift=0.6cm, yshift=0.2cm]{}($(psd.north)+(0,3cm)$) -- (psd.north);
 
     \draw[->](rawdata.south west) --++ (-10,-3) node[midway, left, label={\Huge{$\frac{k_{\mathrm{B}}T_c}{\sigma_x^2}$}}]{} --++ (0,-3) node[yshift=-0.3cm, label=below:{\Huge {$k_{\text{equipartition}}$}}](k) {};
     \draw[->] (U0.south) --++ (0,-3)node[yshift=-0.3cm, label=below:{\Huge {$k_{\text{PDF}}$}}](k2) {};

@@ -7,9 +7,9 @@
 \begin{tikzpicture}
     \begin{axis}[xlabel=$x$, ylabel=Probability density, xmin=-2, xmax=2, legend pos = north west, xtick=\empty, ytick=\empty, width=0.85\textwidth]
         \addplot[thick, blue] table[col sep=comma, x=x, y=pconv]{flattened_PDFs.csv};
-        \addlegendentry{$\pi_c * \mathcal N\left[ x_0,\sqrt{2k_{\mathrm B}T_c/k'} \right]$}
+        % \addlegendentry{$\pi_c * \mathcal N\left[ x_0,\sqrt{2k_{\mathrm B}T_c/k'} \right]$}
         \addplot[dashed, olive] table[col sep=comma, x=x, y=p]{flattened_PDFs.csv};
-        \addlegendentry{$\pi_c$}
+        % \addlegendentry{$\pi_c$}
     \end{axis}
 \end{tikzpicture}
 \end{document}

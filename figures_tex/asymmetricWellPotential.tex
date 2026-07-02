@@ -9,8 +9,9 @@
     \begin{axis}[axis lines=none,
                  y axis line style={draw=none}, 
                  ytick=\empty,
-                 xtick={-1,0,2},
-                 xticklabels={$x_{\min}$, 0, $\alpha |x_{\min}|$},
+                 xtick=\empty,
+                %  xtick={-5,0,10},
+                %  xticklabels={$x_{\min}$, 0, $\alpha |x_{\min}|$},
                  clip=false
         ]
 
@@ -53,11 +54,11 @@ print(fr"(axis cs:-{potential.x_well},{upper_well_y}) -- node[left, blue]{{\smal
 print(fr"(axis cs:-{potential.x_well},{lower_well_y});")
 print(fr"\node at (axis cs:0,{potential.E_barrier-1})[above] {{\small $U_0(x)$}};")
 print(fr"\draw[<->, thick]") 
-print(fr"(axis cs:{min_extent},-4) -- node[below]{{\small $x_{{\min}}$}}")
-print(fr"(axis cs:0,-4);")
+print(fr"(axis cs:{min_extent},-6) -- node[below, at start]{{\small $x_{{\min}}$}}")
+print(fr"(axis cs:0,-6);")
 print(fr"\draw[<->, thick]") 
-print(fr"(axis cs:0,-4) -- node[below]{{\small $x_{{\max}}$}}")
-print(fr"(axis cs:{max_extent},-4);")
+print(fr"(axis cs:0,-6) -- node[below, at end]{{\small $x_{{\max}}$}}")
+print(fr"(axis cs:{max_extent},-6);")
     \end{pycode}
     % \addplot[domain=-0.7:0.68, samples=200]{5*(1-4*x^2)^2-4*x};
     % \addplot[domain=-1:-0.7, red]{-50*(x+0.7)+5*(1-4*0.7^2)^2+4*0.7};
