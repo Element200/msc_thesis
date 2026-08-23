@@ -1,0 +1,26 @@
+\documentclass{standalone}
+
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$t$, ylabel=$\mathcal L_1$ distance, axis x line=bottom, axis y line=left, ymin=0.01]
+        \addplot[thick, black] table[x=t, y=1, col sep=comma]{analytic_distances.csv};
+        \addplot[thick, blue] table[x=t, y=4, col sep=comma]{analytic_distances.csv};
+        \addplot[thick, red] table[x=t, y=22, col sep=comma]{analytic_distances.csv};
+        % \addlegendentry{$\mathcal D_c[p_h]$};
+        % \addlegendentry{$\mathcal D_c[p_w]$};
+        % \addlegendentry{$\mathcal D_c[p_w]$};
+        % \draw(axis cs: 0.0011,0.085) circle(0.18cm) node(crossing){};
+        % \draw[<-] (crossing.north east) -- (axis cs:0.01,0.2) node[above](end){Mpemba effect};
+    \end{loglogaxis}
+
+    
+\end{tikzpicture}
+\end{document}

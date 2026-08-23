@@ -1,0 +1,18 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{physics}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[ylabel = $\bar E(t)/\bar E_{\mathrm{eq}}$, xlabel=$t$ (s)]
+        \addplot[black,mark=none] table[x=t,y=c]{output_energies_simulation.csv};
+        % \addlegendentry{$T_c$};
+        \addplot[blue,mark=none] table[x=t,y=w]{output_energies_simulation.csv};
+        % \addlegendentry{$12T_c$};
+        \addplot[red,mark=none] table[x=t,y=h]{output_energies_simulation.csv};
+        % \addlegendentry{$1000T_c$};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,14 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[xlabel= Time (s), ylabel=Drift velocity (nm/s)]
+        \addplot[red, no marks] table[col sep=comma, y=driftvel]{drift_series.csv};
+    \end{axis}
+\end{tikzpicture}
+\end{document}

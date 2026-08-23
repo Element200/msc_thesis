@@ -1,0 +1,21 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[xlabel=$x/\sigma$, 
+        xtick=data, xtick={-6, -4,-2,0,2,4, 6},
+        bar width=1.5pt, axis lines=center, x label style={at={(axis description cs:1.1,-0.1)}}]
+        \addplot[ybar, ybar legend, red!50] table[col sep=comma, x=x, y=p_0]{symmetrisation_pdfs.csv};
+        \addlegendentry{$p_0(x/\sigma)$}
+        \addplot[ybar, ybar legend, blue!50] table[col sep=comma, x=x, y=p_1]{symmetrisation_pdfs.csv};
+        \addlegendentry{$p_1(x/\sigma)$}
+        \addplot[thick] table[col sep=comma, x=x, y=pi]{symmetrisation_pdfs.csv};
+        \addlegendentry{$\mathcal N[0,1]$}
+    \end{axis}
+\end{tikzpicture}
+\end{document}

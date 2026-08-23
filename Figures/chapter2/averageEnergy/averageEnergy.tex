@@ -1,0 +1,21 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{graphicx}
+
+\usetikzlibrary{positioning}
+\begin{document}
+\begin{tikzpicture}
+    \node (a) at (0,0){\includegraphics[height=8cm]{E_av.pdf}};
+    \node[above left=-0.5cm and -1cm of a]{\huge (a)};
+    \node[right=1cm of a] (b){\includegraphics[height=8cm]{L1.pdf}};
+    \node[above left=-0.5cm and -1cm of b]{\huge (b)};
+    
+    \node (ai) at (-2,7){\includegraphics[width=3cm]{pdf_init.pdf}};
+    \draw[->] (ai.south) -- (-2,3.5);
+    \node (aii) at (1,7){\includegraphics[width=3cm]{pdf_mid2.pdf}};
+    \draw[->] (aii.south) -- (1.7,-1.4);
+    \node (aiii) at (4,7){\includegraphics[width=3cm]{pdf_end.pdf}};
+    \draw[->] (aiii.south) -- (4,-1.4);
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,24 @@
+\documentclass{standalone}
+
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{semilogxaxis}[xlabel={\Huge $t$}, axis x line=center, axis y line=left, ylabel style={opacity=0}, ylabel={\Huge $\mathcal L_1$} distance, ymax=2, xmin=1e-5]
+        \addplot[thick, red] table[x=t, y=h, col sep=comma]{harmonicDistances_FPE.csv};
+        % \addlegendentry{$\mathcal D_c[p_h]$};
+        \addplot[thick, blue] table[x=t, y=w, col sep=comma]{harmonicDistances_FPE.csv};
+        % \addlegendentry{$\mathcal D_c[p_w]$};
+        % \draw(axis cs: 0.0008001,0.09135) circle(0.1cm) node(crossing){};
+        \node at (axis cs:0.0005,0.4) {No Mpemba effect};
+    \end{semilogxaxis}
+
+    
+\end{tikzpicture}
+\end{document}

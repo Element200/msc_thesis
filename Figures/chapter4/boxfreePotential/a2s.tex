@@ -1,0 +1,12 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{semilogxaxis}[xlabel=$T/T_c$, ylabel=$a_2(T)$, axis lines=center, ymax=0.1, ytick={-0.1,-0.05,0.05,0.1}, yticklabels={$-0.1$,$-0.05$,$0.05$,$0.1$}]
+        \addplot[thick] table[col sep=comma, x=T, y=a2]{a2s.csv};
+    \end{semilogxaxis}
+\end{tikzpicture}
+\end{document}

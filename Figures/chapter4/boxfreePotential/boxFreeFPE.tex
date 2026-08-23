@@ -1,0 +1,20 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$t$ (s), ylabel = $\mathcal L_1$ distance, ymin=0.01]
+        \addplot[black!50, thin] table[col sep=comma, x=t, y=langevinc]{potential_data.csv};
+        % \addlegendentry{$T_=12T_c$}
+        \addplot[blue!50, thin] table[col sep=comma, x=t, y=langevinw]{potential_data.csv};
+        % \addlegendentry{$T_=3T_c$}
+        \addplot[red!50, thin] table[col sep=comma, x=t, y=langevinh]{potential_data.csv};
+        % \addlegendentry{$T_c$}
+        \addplot[red, dashed, thick] table[col sep=comma, x=t, y=FPEh]{potential_data.csv};
+        \addplot[blue, dashed, thick] table[col sep=comma, x=t, y=FPEw]{potential_data.csv};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

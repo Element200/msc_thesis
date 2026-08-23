@@ -1,0 +1,20 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[xlabel={\Large $x$}, ylabel=\Large{Probability density}, 
+        xtick=data, xtick={-10,-5,0,5,10, 15, 20},
+        bar width=2pt,
+        enlarge x limits=0.02, ymax=0.31]
+        \addplot[ybar, ybar legend, blue!30] table[col sep=comma, x=x, y=clip]{clip_pdfs_doubleWell_10000.csv};
+        \addlegendentry{{\Large Clipped}}
+        \addplot[thick, olive] table[col sep=comma, x=x, y=no clip]{clip_pdfs_doubleWell_10000.csv};
+        \addlegendentry{{\Large $\pi(x;80T_c)$}}
+    \end{axis}
+\end{tikzpicture}
+\end{document}

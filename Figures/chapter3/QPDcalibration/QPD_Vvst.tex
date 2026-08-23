@@ -1,0 +1,15 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[axis x line=bottom, axis y line=left, xlabel=\Large{$t$ (s)}, ylabel=\Large{$\delta s_x$}, xmax=1.999, xmin=0, ylabel style={color=blue}, yticklabel style={color=blue}]
+        \addplot[thin, blue] table[x=t, y=out, col sep=comma]{calibration.csv};
+    \end{axis}
+    \begin{axis}[axis x line=none, axis y line=right, xlabel=\Large{$t$ (s)}, ylabel=\Large{$\delta V_{\mathrm{in}}$ (V)}, xmax=1.999, xmin=0, ylabel style={color=red}, scaled y ticks=false, yticklabel style={color=red, /pgf/number format/fixed, /pgf/number format/precision=2}]
+        \addplot[thick, red] table[x=t, y=in, col sep=comma]{calibration.csv};
+    \end{axis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,28 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$t$ (s), ylabel = $\mathcal L_1$ distance, ymin=0.01]
+        \addplot[black!50, thin] table[col sep=comma, x=t, y=1.0]{double_mpemba.csv};
+        \addlegendentry{$T_c=1$};
+        \addplot[blue!50, thin] table[col sep=comma, x=t, y=3.0]{double_mpemba.csv};
+        \addlegendentry{$T_w=3$};
+        \addplot[red!50, thin] table[col sep=comma, x=t, y={12.05}]{double_mpemba.csv};
+        \addlegendentry{$T_h=12$}
+        \addplot[violet!50, thin] table[col sep=comma, x=t, y={39.67}]{double_mpemba.csv};
+        \addlegendentry{$T_W=40$};
+        \addplot[magenta!50, thin] table[col sep=comma, x=t, y={137.14}]{double_mpemba.csv};
+        \addlegendentry{$T_H=137$};
+        \addplot[magenta, dashed, thick] table[col sep=comma, x=t, y=H]{double_mpemba_FPE.csv};
+        \addplot[violet, dashed, thick] table[col sep=comma, x=t, y=W]{double_mpemba_FPE.csv};
+        \addplot[red, dashed, thick] table[col sep=comma, x=t, y=h]{double_mpemba_FPE.csv};
+        \addplot[blue, dashed, thick] table[col sep=comma, x=t, y=w]{double_mpemba_FPE.csv};
+        % \addplot[red, dashed, thick] table[col sep=comma, x=t, y=FPEh]{real_data.csv};
+        % \addplot[blue, dashed, thick] table[col sep=comma, x=t, y=FPEw]{real_data.csv};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

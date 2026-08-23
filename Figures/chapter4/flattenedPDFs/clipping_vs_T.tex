@@ -1,0 +1,17 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{semilogxaxis}[xlabel={\Large $T_h/T_c$}, ylabel={\Large $\mathscr D_{\mathcal L_1}\left[ \pi_{\mathrm{clip}}(x;T_h), \pi(x;T_h) \right]$}, legend pos=north west]
+        \addplot[only marks, red] table[col sep=comma, x=T, y=L1]{clip_errors_harmonic_10000.csv};
+        \addlegendentry{{Harmonic}}
+        \addplot[only marks, blue] table[col sep=comma, x=T, y=L1]{clip_errors_doubleWell_10000.csv};
+        \addlegendentry{{Asymmetric double-well}}
+    \end{semilogxaxis}
+\end{tikzpicture}
+\end{document}

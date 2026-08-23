@@ -1,0 +1,13 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{semilogxaxis}[axis x line = center, axis y line =left, ylabel=$a_2(T)$, xlabel=$T/T_c$, xtick distance=10^1, minor x tick num=20]
+        \addplot[thick, red] table[col sep=comma, x=T, y=a2a]{analytic_params.csv};
+        \addplot[thin, dashed, blue] table[col sep=comma, x=T, y=a2]{analytic_params.csv};
+    \end{semilogxaxis}
+\end{tikzpicture}
+\end{document}

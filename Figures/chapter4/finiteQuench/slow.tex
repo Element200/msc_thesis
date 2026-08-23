@@ -1,0 +1,18 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$t$ (s), ylabel=$\mathcal L_1$ distance, ymin=1e-2]
+        \addplot[red!50, thin] table[col sep=comma, x=t, y=slowh]{quench_distances.csv};
+        \addplot[blue!50, thin] table[col sep=comma, x=t, y=sloww]{quench_distances.csv};
+        \addplot[black!50, thin] table[col sep=comma, x=t, y=slowc]{quench_distances.csv};
+
+        \addplot[red, dashed]table[col sep=comma, x=t, y=slowh]{quench_distances_FPE.csv};
+        \addplot[blue, dashed]table[col sep=comma, x=t, y=sloww]{quench_distances_FPE.csv};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

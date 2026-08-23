@@ -1,0 +1,26 @@
+\documentclass{standalone}
+
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usetikzlibrary{shapes.geometric}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{semilogxaxis}[axis x line=center, xlabel=\large{$T_h/T_c$}, ylabel=\large{$a_2(T_h)$}, axis y line=left, xlabel style={at={(axis description cs:1.1,0.66)}, anchor=north},ylabel style={at={(axis description cs:0.05,0.5)}, anchor=west}, ymax=2e-2, ymin=-3e-2, clip=false]
+        
+        \addplot[thick, olive] table[col sep=comma, x=T, y=some]{a2s.csv};
+        % \addlegendentry{Mpemba};
+        \addplot[thick, blue] table[col sep=comma, x=T, y=strong]{a2s.csv};
+        % \addlegendentry{Strong Mpemba};
+        \addplot[thick, red] table[col sep=comma, x=T, y=no]{a2s.csv};
+        % \addlegendentry{No Mpemba};
+
+        \node at (axis cs:{3e4,0.0051}) {\color{olive}{Mpemba}};
+        \draw[thick, blue](axis cs:{32, 0}) circle(0.1cm) node[above right, blue]{$T_h^*$};
+        \node at (axis cs:{6e4,-0.011}) {\color{blue}{Strong Mpemba}};
+        \node at (axis cs:{4e4,-0.026}) {\color{red}{No Mpemba}};
+    \end{semilogxaxis}
+\end{tikzpicture}
+\end{document}

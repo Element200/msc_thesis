@@ -1,0 +1,23 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{semilogxaxis}
+        [xlabel=\Large{$T_h/T_c$}, ylabel=\Large{$\mathcal L_1$ distance}, legend pos=south east]
+        % \addplot[violet, thick] table[col sep=comma, x=T, y=KL]{L1.csv};
+        % \addlegendentry{KL distance};
+        \addplot[blue, thick] table[col sep=comma, x=T, y=L1]{L1.csv};
+        % \addlegendentry{$\mathcal L_1$ distance};
+        % \addplot[red, thick] table[col sep=comma, x=T, y=L2]{L1.csv};
+        % \addlegendentry{$\mathcal L_2$ distance}
+        % \addplot[olive, thick] table[col sep=comma, x=T, y=Linf]{L1.csv};
+        % \addlegendentry{$\mathcal L_{\infty}$ distance};
+    \end{semilogxaxis} 
+\end{tikzpicture}
+\end{document}

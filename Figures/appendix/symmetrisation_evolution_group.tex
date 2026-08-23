@@ -1,0 +1,110 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,colormaps}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+\begin{groupplot}[
+    group style={
+        group size=1 by 2,
+        vertical sep=5mm,
+    },
+    width=12cm,
+    height=4cm,
+    ylabel={$x/\sigma$},
+    ymin=-5.4,
+    ymax=5.4,
+    xmode=log,
+    xmin=1e-5,
+    xmax=3e-2,
+    point meta min=0,
+    point meta max=1,
+    colormap name=viridis,
+]
+
+% --- top plot ---
+\nextgroupplot[
+    xtick=\empty,
+]
+
+\addplot[
+    matrix plot*,
+    mesh/cols=99,
+    point meta=explicit,
+]
+table[
+    col sep=comma,
+    x=t,
+    y=x,
+    meta=h0,
+] {histogram_time_evolution_downsampled.csv};
+
+\addplot[
+    white,
+    dashed,
+    line width=0.5pt,
+]
+coordinates {
+    (1e-6,0)
+    (1,0)
+};
+
+% --- bottom plot ---
+\nextgroupplot[
+    xlabel={$t$ (s)},
+]
+
+\addplot[
+    matrix plot*,
+    mesh/cols=99,
+    point meta=explicit,
+]
+table[
+    col sep=comma,
+    x=t,
+    y=x,
+    meta=h1,
+] {histogram_time_evolution_downsampled.csv};
+
+\addplot[
+    white,
+    dashed,
+    line width=0.5pt,
+]
+coordinates {
+    (1e-6,0)
+    (1,0)
+};
+
+\end{groupplot}
+
+\path (group c1r1.north east) -- (group c1r2.south east)
+coordinate[pos=0.5] (cbcenter);
+
+\begin{axis}[
+    hide axis,
+    scale only axis,
+    height=8.4cm,      % 4cm + 4cm + 4mm
+    width=0pt,
+    at={(cbcenter)},
+    anchor=west,
+    xshift=1.2cm,
+    colormap name=viridis,
+    point meta min=0,
+    point meta max=1,
+    colorbar,
+    colorbar style={
+        height=8.4cm,
+        xlabel={$p(x,t)$},
+    },
+]
+\addplot [draw=none] coordinates {(0,0)};
+\end{axis}
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,15 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$t$, ylabel={$\mathcal L_1$ asymmetry distance}, ymin=4e-2, ymax=3]
+        \addplot[red, thin] table[col sep=comma, x=t, y=L1_0]{data4_distances.csv};
+        % \addplot[red, dashed] table[col sep=comma, x=t, y=p_0]{symmetrisation_L1_FPE.csv};
+        \addplot[blue, thin] table[col sep=comma, x=t, y=L1_1]{data4_distances.csv};
+        % \addplot[blue, dashed] table[col sep=comma, x=t, y=p_1]{symmetrisation_L1_FPE.csv};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

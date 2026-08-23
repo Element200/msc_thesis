@@ -1,0 +1,17 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$t$ (s), ylabel = $\mathcal L_1$ distance, ymin=0.01]
+        \addplot[black!50, thin] table[col sep=comma, x=t, y=c]{real_data.csv};
+        \addplot[blue!50, thin] table[col sep=comma, x=t, y=w]{real_data.csv};
+        \addplot[red!50, thin] table[col sep=comma, x=t, y=h]{real_data.csv};
+        \addplot[red, dashed, thick] table[col sep=comma, x=t, y=FPEh]{real_data.csv};
+        \addplot[blue, dashed, thick] table[col sep=comma, x=t, y=FPEw]{real_data.csv};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

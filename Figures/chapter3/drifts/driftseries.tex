@@ -1,0 +1,14 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[xlabel= Time (s), ylabel=Total drift (nm)]
+        \addplot[black, no marks] table[col sep=comma, y=drift]{drift_series.csv};
+    \end{axis}
+\end{tikzpicture}
+\end{document}

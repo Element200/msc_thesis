@@ -1,0 +1,18 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[ylabel={$h(t;T_0,\Lambda)$}, xlabel=$t/\tau$]
+        \addplot[red, thick, domain=1e-4:1, samples=100]{(10-1)*exp(-30*x)+1};
+        \addlegendentry{$\Lambda\tau=30$};
+        \addplot[orange, thick, domain=1e-4:1, samples=100]{(10-1)*exp(-60*x)+1};
+        \addlegendentry{$\Lambda\tau=60$};
+        \addplot[blue, thick, domain=1e-4:1, samples=100]{(10-1)*exp(-90*x)+1};
+        \addlegendentry{$\Lambda\tau=90$};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,23 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\newcommand{\xa}[0]{0.34}
+\newcommand{\xb}[0]{-0.2}
+\newcommand{\xc}[0]{0.7}
+% \newcommand{\xd}
+\newcommand{\potential}[1]{2*(1-4*(#1)^2)^2+1.3*(#1)}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[axis lines=none]
+        \addplot[black, thick, domain=-0.9:0.9, samples=100]{\potential{x}};
+        \addplot[only marks, red, mark size=3pt] coordinates{
+        % (\xa,0.35+\potential{\xa})
+        % (\xb,0.4+\potential{\xb})
+        (\xc,1.05+\potential{\xc})
+        };
+    \end{axis};
+\end{tikzpicture}
+\end{document}

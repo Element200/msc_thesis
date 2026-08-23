@@ -1,0 +1,20 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[xlabel=$t$ (s), ylabel = $x/x_s$, axis lines = center, xtick={0,0.1}, legend style ={at = {(1.05, 0.25)}}, xlabel style={at={(axis description cs:1.1,0.3)}}, extra y ticks={0.155966}, extra y tick labels={$\mathtt{drift}_n$}, ymin=-1.2, ymax=1]
+            \addplot[red, thin] table[col sep=comma, x=t, y=x]{calibration_trajectory.csv};
+            \addlegendentry{Calibration};
+            \addplot[blue, thin] table[col sep=comma, x=t, y=x]{positioning_trajectory.csv};
+            \addlegendentry{Positioning};
+            \addplot[olive, thin] table[col sep=comma, x=t, y=x]{protocol_trajectory.csv};
+            \addlegendentry{Protocol};
+            \addplot[black, dashed, thick, domain=0:0.05, samples=5]{0.155966};
+            \addplot[blue!20, thin] table[col sep=comma, x=t, y=x0]{positioning_trajectory.csv};
+            \addplot[olive!20, thin] table[col sep=comma, x=t, y=x0]{protocol_trajectory.csv};
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

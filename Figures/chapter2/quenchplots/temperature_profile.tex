@@ -1,0 +1,68 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\usetikzlibrary{arrows.meta,fadings,decorations.pathmorphing}
+
+\makeatletter
+\newif\iftikz@shading@path
+\tikzset{
+    % Need this for the bounding box calculation of the
+    % fading and the rectangle that bounds the fading.
+    % If set to zero things (e.g., arrows) may get cut off.
+    fading sep/.store in=\fadingsep,
+    fading sep=0.25cm,
+    shaded path/.code={%
+        % Prevent this stuff happning recursively.
+        \iftikz@shading@path%
+        \else%
+            \tikz@shading@pathtrue%
+            \tikz@addmode{%
+                % Interrupt the picture to create a fading.
+                \pgfinterruptpicture%
+                    \begin{tikzfadingfrompicture}[name=.]
+                        \path [shade=none,fill=none]#1;%
+                        % Need to set the bounding box manually. Include the \fadingsep border.
+                        \xdef\fadingboundingbox{{\noexpand\pgfpoint{\the\pgf@picminx-\fadingsep}{\the\pgf@picminy-\fadingsep}}%
+                            {\noexpand\pgfpoint{\the\pgf@picmaxx+\fadingsep}{\the\pgf@picmaxy+\fadingsep}}}%
+                        \expandafter\pgfpathrectanglecorners\fadingboundingbox%
+                        \pgfusepath{discard}%
+                    \end{tikzfadingfrompicture}%
+                \endpgfinterruptpicture%
+                % Install a rectangle that covers the shaded/faded path.
+                \expandafter\pgfpathrectanglecorners\fadingboundingbox%
+                % Make the fading happen.
+                \def\tikz@path@fading{.}%
+                \tikz@mode@fade@pathtrue%
+                \tikz@fade@adjustfalse%
+                \pgfpointscale{0.5}{\expandafter\pgfpointadd\fadingboundingbox}%
+                \def\tikz@fade@transform{shift={(\the\pgf@x,\the\pgf@y)}}%
+            }%
+        \fi%
+    }
+}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[ylabel=\Large{$T/T_c$}, xlabel=\Large{$z/\ell$}, legend pos=north west]
+        \foreach[evaluate=\n as \redfrac using (\n-1)*100/(20-1)] \n in {2,3,...,20}{
+            \edef\temp{\noexpand\addplot[color=blue!\redfrac!red] table[col sep=comma, x index=0, y index=\n]{temperature_profile.csv};}
+            \temp
+        }
+        \addplot[domain=0:1, samples=5, color=red, no marks] coordinates{(0,1) (0,10) (1,10)};
+
+        \path [left color=red, right color=blue, shaded path={ 
+    [draw=transparent!0, thick, ->] (axis cs:0.1,9)
+        to[out=-20,in=110]
+    (axis cs:0.65,1.7);
+}];
+
+        % \draw[very thick,->, ]
+        % (axis description cs:0.05,0.95)
+        %     to[out=-20,in=130]
+        % (axis description cs:0.95,0.05);
+    \end{axis}
+\end{tikzpicture}
+\end{document}

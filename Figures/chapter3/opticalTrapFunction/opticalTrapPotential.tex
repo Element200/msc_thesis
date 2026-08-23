@@ -1,0 +1,18 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[axis lines=none]
+        \addplot[domain=-2:2, samples=500, thick, black]{-exp(-2*x^2)};
+        \addplot[domain=-1:1, samples=500, blue, dashed]{-1+2*x^2};
+        % \addplot[domain=0.1:0.7, thick, red]{-1+2*0.25^2+4*0.25*(x-0.25)};
+        \node at (axis cs:2,-0.15){$U(x)$};
+        \node[color=blue] at (axis cs:1.15,0.4){$\frac 12 kx^2$};
+        % \node[color=red] at (axis cs:1,-0.9){\small Slope=$F_{\max}$};
+    \end{axis}
+    
+\end{tikzpicture}
+\end{document}

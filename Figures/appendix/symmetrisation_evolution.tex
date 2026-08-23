@@ -1,0 +1,53 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\usepgfplotslibrary{groupplots, colormaps}
+
+\begin{document}
+    \centering
+    
+    \begin{tikzpicture}
+    
+    \begin{axis}[ylabel={$x/\sigma$},
+        % xlabel=$t$ (s),
+        ymin=-5.4,
+        ymax=5.4,
+        point meta min=0,
+        point meta max=1,
+        colormap name=viridis,
+        xmode=log,
+        xmin=1e-5,
+        xmax=3e-2,
+        colorbar,
+        colorbar style={xlabel={$p(x,t)$}},
+        scale only axis,
+        xtick=\empty,
+        width=12cm,
+        height=4cm]
+    \addplot[
+        matrix plot*,
+        mesh/cols=99,
+        point meta=explicit,
+    ]
+    table[
+        col sep=comma,
+        x=t,
+        y=x,
+        meta=h0,
+    ] {histogram_time_evolution.csv}{};
+    \addplot[
+        white,
+        dashed,
+        line width=0.5pt,
+    ]
+    coordinates {
+        (1e-6,0)
+        (1,0)
+    };
+    \end{axis}
+    
+    \end{tikzpicture}
+    
+    \end{document}

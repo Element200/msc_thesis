@@ -1,0 +1,13 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[axis lines=none, xmin=-1.5,xmax=1.5]
+        \addplot[thick, red] table[col sep=comma, x=x, y=Fa]{analytic_params.csv};
+        \addplot[thin, dashed, blue] table[col sep=comma, x=x, y=F]{analytic_params.csv};
+    \end{axis}
+\end{tikzpicture}
+\end{document}

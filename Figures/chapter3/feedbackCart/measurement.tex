@@ -1,0 +1,44 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pythontex}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[axis lines=none]
+
+\begin{pycode}
+import sympy as sym
+
+x = sym.symbols('x')
+U = lambda x: (1-x**2)**2
+F = sym.lambdify(x, -sym.diff(U(x), x))
+parabola = lambda x, x0: (0.5*k*(x-X(x0))**2 - (0.5*k*(x0-X(x0))**2-U(x0)))
+parabola_centre = lambda x0: "X(x0)"
+k = 20
+X = lambda x: x+F(x)/k
+extent = 0.7
+line_extent = 3
+
+x1 = 1.6
+print(fr"""
+        \addplot[thick, dashed, domain=-2:2, samples=500]{{(1-x^2)^2}};
+        \addplot[only marks, red, mark size=3pt] coordinates{{({x1},{U(x1)}+0.2)}};""")
+print(fr"\addplot[thick, blue, domain={X(x1)-extent}:{X(x1)+extent}, samples=100]{{{parabola(x, x1)}}};".replace("**","^"))
+print(fr"""
+        \node at (axis cs: 1.4, 4){{$U(x)$}};
+        \node[blue] at (axis cs: 0.3,6){{$\frac 12 k(x-X)^2$}};
+        
+        
+""")   
+
+\end{pycode}
+\end{axis}
+\end{tikzpicture}
+\end{document}
+
+% \node[blue] at (axis cs: 0,7){{$\frac 12 k(x-X)^2$}};
+        % \draw[dotted] (axis cs: {x1}, {U(x1)+0.2}) -- (axis cs: {x1},{U(x1)-line_extent}) node[at end](l1){{}};
+        % \draw[dotted] (axis cs: {X(x1)}, {-1- (0.5*k*(X(x1)-X(x1))**2-U(x1))}) -- (axis cs: {X(x1)},{-(0.5*k*(X(x1)-X(x1))**2-U(x1))-line_extent}) node[at end](l2){{}};
+        % \draw[<->](axis cs: {X(x1)},{-(0.5*k*(X(x1)-X(x1))**2-U(x1))-line_extent}) -- node[at end, right, xshift=7mm]{{\small{{$x-X=U'(x)/k$}}}} (axis cs: {x1},{U(x1)-line_extent});

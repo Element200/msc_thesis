@@ -1,0 +1,24 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{graphicx}
+
+\begin{document}
+\begin{tikzpicture}
+
+% Countertop (blue slab, side profile)
+\fill[blue!60, opacity=0.35] (-4,0) rectangle (4,-0.4);
+
+% Pan base (bottom contact surface)
+\shade[bottom color = red!70, top color=red!70, opacity=0.35] (-1.8,0.6) rectangle (1.8,0);
+
+% Pan walls (simple trapezoid side profile)
+\fill[red!70, opacity=0.35] 
+    (-1.8,0.6) -- (-1.8,1) -- (-1.6, 1) -- (-1.6, 0.6) -- (1.6,0.6) -- (1.6,1) -- (1.8,1) -- (1.8,0.6) -- cycle;
+% Pan rim outline
+
+% Simple handle (side extension)
+\fill[red!70, opacity=0.35] (1.8,1) rectangle (3.2,0.8);
+
+\node at (0,1.375) {\includegraphics[width=2cm]{{../fpe_evolution/pdf_i.pdf}}};
+\end{tikzpicture}
+\end{document}

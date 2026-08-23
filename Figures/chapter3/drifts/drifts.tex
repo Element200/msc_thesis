@@ -1,0 +1,16 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\usepgfplotslibrary{statistics}
+
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[xlabel= Approximate drift velocity (nm/s), ylabel=Probability density]
+        \addplot+[hist = {bins=50, density}, no marks, fill=red!30, draw=red] table[col sep=comma, y=driftvel]{drift_series.csv};
+    \end{axis}
+\end{tikzpicture}
+\end{document}

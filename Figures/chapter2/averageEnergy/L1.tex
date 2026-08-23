@@ -1,0 +1,19 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[ylabel = $\mathcal L_1$ distance, xlabel=$t$ (s)]
+        \addplot[black,mark=none] table[x=t,y=L1_c, col sep=comma]{L1_mod.csv};
+        % \addlegendentry{$T_c$};
+        \addplot[blue,mark=none] table[x=t,y=L1_w, col sep=comma]{L1_mod.csv};
+        % \addlegendentry{$12T_c$};
+        \addplot[red,mark=none] table[x=t,y=L1_h, col sep=comma]{L1_mod.csv};
+        % \addlegendentry{$1000T_c$};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document}

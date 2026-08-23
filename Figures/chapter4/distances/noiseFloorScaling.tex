@@ -1,0 +1,27 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{loglogaxis}[xlabel=$N$, ylabel=Noise floor, legend style={at={(1.1, 1.1)}}]
+        \addplot[only marks, blue, error bars/.cd, y dir=both,y explicit] table[col sep=comma, x=N, y=L1, y error=L1std]{noisefloor.csv};
+        \addlegendentry{$\mathcal L_1$};
+        \addplot[only marks, mark=*, draw=blue, fill=blue!40, error bars/.cd, y dir=both,y explicit] table[col sep=comma, x=N, y=L2, y error=L2std]{noisefloor.csv};
+        \addlegendentry{$\mathcal L_2$};
+        \addplot[only marks, mark=*, draw=blue, fill=blue!20, error bars/.cd, y dir=both,y explicit] table[col sep=comma, x=N, y=Linf, y error=Linfstd]{noisefloor.csv};
+        \addlegendentry{$\mathcal L_\infty$};
+        \addplot[only marks, violet, error bars/.cd, y dir=both,y explicit] table[col sep=comma, x=N, y=KL, y error=KLstd]{noisefloor.csv};
+        \addlegendentry{KL};
+        \addplot[only marks, red, error bars/.cd, y dir=both, y explicit] table[col sep=comma, x=N, y=KS, y error=KSstd]{noisefloor.csv};
+        \addlegendentry{KS};
+        \addplot[dashed, thin, domain=100:100000] {10*x^(-0.5)};
+        \addlegendentry{$N^{-1/2}$};
+    \end{loglogaxis}
+\end{tikzpicture}
+\end{document} 
